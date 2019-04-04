@@ -1,0 +1,50 @@
+<? if (checkUserIsAuthorized()): ?>
+<div style="margin-bottom: 10px; "> 
+	<button type="button" class="btn btn-primary">
+		<a href="author_add.php" style="color: white"> 
+			Добавить 
+		</a> 
+	</button>
+</div> 
+<? endif; ?>
+<div class="row"> 
+	<div class="input-group mb-3">
+	  <div class="input-group-prepend">
+		<label class="input-group-text" for="inputGroupSelect01">Options</label>
+	  </div>
+	  <select class="custom-select" id="inputGroupSelect01">
+		<option value="2" <?= ($count == 2)? 'selected': '' ?>>2</option>
+		<option value="5" <?= ($count == 5)? 'selected': '' ?>>5</option>
+		<option value="10" <?= ($count == 10)? 'selected': '' ?>>10</option>
+	  </select>
+	</div>
+	<div class="input-group mb-3">
+	  <div class="input-group-prepend">
+		<span class="input-group-text" id="basic-addon1">Фильтр</span>
+	  </div>
+	  <input type="text" class="form-control" placeholder="Имя автора" aria-label="Username" aria-describedby="basic-addon1" value="<?= $filter; ?>">
+	</div>
+	<div class="input-group mb-3">
+	  <button type="button" class="btn btn-primary"> Фильтровать </button> 
+	</div>
+</div>
+<table border='1'>
+	<tr>
+		<th> ID </th> 
+		<th> Имя </th> 
+		<? if (checkUserIsAuthorized()): ?>
+			<th> Действия <th> 
+		<? endif ; ?>
+	</tr> 
+	<? foreach ($authors as $author): ?>
+		<tr> 
+			<td> <?= $author['author_id']; ?></td> 
+			<td> <?= $author['author_name']; ?> </td> 
+			<? if (checkUserIsAuthorized()): ?>
+				<td> 
+					<button> <a href='author_edit.php?id=<?= $author['author_id']; ?>'> Редактировать </a> </button>  
+					<button class='remove'> <a href='author_delete.php?id=<?= $author['author_id']; ?>'> Удалить <i class="fas fa-trash-alt"></i></a> </button> 
+				</td> 
+			<? endif; ?> 
+		</tr>
+	<? endforeach ; ?>
