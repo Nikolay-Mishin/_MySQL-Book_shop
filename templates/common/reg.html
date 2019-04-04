@@ -1,0 +1,79 @@
+<label class="center">Форма регистрации</label>
+<form class="clearfix center" action="" method="post">
+    <fieldset><legend>Регистрационные данные</legend>
+        <div class="form-row">
+            <label>Логин<i class="require">*</i></label>
+            <input class="full-width" type="text" name="login" required value="gg">
+            <!-- <?php if ($_POST) call ('login'); ?> -->
+        </div>
+
+        <div class="form-row">
+            <div class="form-item">
+                <label>Пароль<i class="require">*</i></label>
+                <input type="password" name="password" required value="1234">
+            </div>
+
+            <div class="form-item">
+                <label>Повторить пароль<i class="require">*</i></label>
+                <input type="password" name="password_dub" required value="1234">
+            </div>
+
+            <i class="fas fa-eye"></i>
+
+            <!-- <?php if ($_POST) call ('password'); ?> -->
+        </div>
+    </fieldset>
+    
+    <fieldset><legend>Личные данные</legend>
+        <div class="form-row">
+            <div class="form-item">
+                <label>Фамилия</label>
+                <input type="text" name="fio" value="g_t">
+                <!-- <?php if ($_POST) call ('name', 'fio', 'Фамилия'); ?> -->
+            </div>
+            
+            <div class="form-item">
+                <label>Имя</label>
+                <input type="text" name="name" value="rt">
+                <!-- <?php if ($_POST) call ('name', '', 'Имя'); ?> -->
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-item">
+                <label>Отчество</label>
+                <input type="text" name="patronymic" value="erty">
+                <!-- <?php if ($_POST) call ('name', 'patronymic', 'Отчество'); ?> -->
+            </div>
+
+            <div class="form-item">
+                <label>Дата рождения</label>
+                <input type="text" name="date_birth" placeholder="В формате дд.мм.гггг" value="35.05.2015">
+                <!-- <?php if ($_POST) call ('dates', 'date_birth'); ?> -->
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-item">
+                <label>Телефон</label>
+                <input type="text" name="phone" placeholder="+7 (123) 456-78-90" value="+7 (123) 456-78-90">
+                <!-- <?php if ($_POST) call ('phone'); ?> -->
+            </div>
+
+            <div class="form-item">
+                <label>E-mail<i class="require">*</i></label>
+                <input type="text" name="email" placeholder="test@mail.ru" required value="fggtt@hhhjy.ru">
+                <!-- <?php if ($_POST) call ('email'); ?> -->
+            </div>
+        </div>
+    </fieldset>
+
+    <!-- <div class="mar"> 
+        <input class="checkbox" type="checkbox" name="terms"> Я принимаю условия <a href="/terms" target="_blank">Пользовательского соглашения</a> и даю своё согласие на обработку моей персональной информации на условиях, определенных <a href="/terms" target="_blank">Политикой конфиденциальности</a>.
+    </div> -->
+
+    <div class="form-row btn">
+        <input id="btn" type="submit" value="Регистрация">
+        <input id="btn-clear" type="reset" value="Сбросить">
+    </div>
+</form>
