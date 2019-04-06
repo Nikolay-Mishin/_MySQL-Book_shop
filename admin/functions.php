@@ -1,5 +1,5 @@
 <?php
-    include_once '../redirect.php';
+    include_once './redirect.php';
     
 	function connect() {
 		$db = mysqli_connect('localhost', 'root', '', '_book_shop'); 

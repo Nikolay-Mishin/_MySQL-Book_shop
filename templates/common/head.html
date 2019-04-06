@@ -1,17 +1,14 @@
 <!DOCTYPE html> 
 <html> 
-	<head>
-		<title> <?= $title ?></title>
-		<link rel="stylesheet" href="./resources/libs/bootstrap/css/bootstrap.css">
-		<link rel="stylesheet" href="./resources/libs/fontawesome/css/all.css">
-		<link rel="stylesheet" href="./resources/css/style.css">
-        <link rel="stylesheet" href="./style.css">
-		<script src="./resources/libs/jquery/jquery-3.3.1.js"> </script>
-		<script src="./resources/libs/bootstrap/js/bootstrap.js"> </script>
-		<script src="./resources/js/script.js"> </script>
-        <script src="./form.js"> </script>
-	</head> 
-	<body> 
+<head>
+    <title> <?= $title ?></title>
+    <link rel="stylesheet" href="./resources/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./resources/libs/fontawesome/css/all.css">
+    <link rel="stylesheet" href="./resources/css/style.css">
+    <link rel="stylesheet" href="./style.css">
+</head> 
+
+<body> 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="navbar-nav">
             <? $url = 'authors.php'; if (!preg_match("/(admin)(\/)(.)/", $_SERVER['SCRIPT_NAME'])) $url = 'admin/authors.php'; ?>
