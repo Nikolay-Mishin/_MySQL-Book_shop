@@ -7,7 +7,7 @@ function redirect ($time = 0, $url = false) {
     }
     header ("Refresh: $time;".$url);
 }
-function set_redirect () { if (empty ($_POST) && !array_key_exists ('r', $_COOKIE)) setcookie ('r', $_SERVER['HTTP_REFERER']); }
+//function set_redirect () { if (empty ($_POST) && !array_key_exists ('r', $_COOKIE)) setcookie ('r', $_SERVER['HTTP_REFERER']); }
 
 class Controller {
     public static function _ () { return new self; } // for chaining
@@ -23,8 +23,14 @@ class Controller {
 
     private function _head ($t) { if ($t == 0) $t = "Location: "; else $t = "Refresh: $t;"; return $t; }
 }
-//controller::_()::_ref();
-//controller::_()::call ($time, $url);
 
+function _redirect ($t = 0, $url = false) {
+    if (!$url) $url = redirect_page();
+    else { $url = $_COOKIE['r']; }
+    setcookie ('r', $_COOKIE['r'], time() - 100);
+    Controller::_()::call ($t, $url);
+}
+function set_redirect () { if (empty ($_POST)) setcookie ('r', redirect_page()); }
 function redirect_page () { return Controller::_()::_ref(); }
+function redirect_out ($redirect, $url) { return "Через $redirect сек. Вы будете перенаправлены на страницу: " . pathinfo ($url)['basename']; }
 ?> 
