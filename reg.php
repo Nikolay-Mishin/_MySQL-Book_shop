@@ -21,20 +21,19 @@ if (isset ($_POST['login']) && isset ($_POST['password']) && isset ($_POST['pass
     if (empty ($errors)) { 
         reg ($db, $login, $password, $email);
         auth ($db, $email, $password);
-        close ($db);
     } 
     else {
         $title = 'Регистрация'; 
 
-        view (COMN.HEAD, compact ('title')); 
-        view (COMN.REG, array ('errors' => $errors)); 
-        view (COMN.FOOT);
+        view (HEAD, compact ('title')); 
+        view (REG, array ('errors' => $errors)); 
+        view (FOOT);
     }
 }
 
 $title = 'Регистрация'; 
 
-view (COMN.HEAD, compact ('title')); 
-view (COMN.REG); 
-view (COMN.FOOT);
+view (HEAD, compact ('title')); 
+view (REG); 
+view (FOOT);
 ?>

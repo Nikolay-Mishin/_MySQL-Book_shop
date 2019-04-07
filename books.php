@@ -20,7 +20,8 @@ mysqli_close ($db);
 
 $title = 'Книги';
 
-view ('templates/common/head', compact ('title')); 
-view ('templates/books/books', compact ('books')); 
-view ('templates/common/footer'); 
+load (BOOKS.name(), compact ('title', 'books'));
+/* view (HEAD, compact ('title')); 
+view (BOOKS.name(), compact ('books')); 
+view (FOOT);  */
 ?>

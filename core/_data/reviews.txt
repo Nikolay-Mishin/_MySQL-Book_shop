@@ -7,4 +7,6 @@ array ('fio' => 'g_t', 'name' => 'rt', 'patronymic' => 'erty', 'email' => 'fggtt
 array ('fio' => 'g_t', 'name' => 'rt', 'patronymic' => 'erty', 'email' => 'fggtt@hhhjy.ru', 'rate' => 'Хорошо, но ожидал(-а) большего', 'text' => '', 'img' => 'about/raccoon.png', 'img_alt' => 'Енот'),
 array ('fio' => 'g_t', 'name' => 'rt', 'patronymic' => 'erty', 'email' => 'fggtt@hhhjy.ru', 'rate' => 'Отлично, все понравилось', 'text' => '', 'img' => 'about/raccoon.png', 'img_alt' => 'Енот'),
 array ('fio' => 'g_t', 'name' => 'rt', 'patronymic' => 'erty', 'email' => 'fggtt@hhhjy.ru', 'rate' => 'Совершенно равнодушно', 'text' => '', 'img' => 'about/raccoon.png', 'img_alt' => 'Енот'),
-array ('fio' => 'g_t', 'name' => 'rt', 'patronymic' => 'erty', 'email' => 'fggtt@hhhjy.ru', 'rate' => 'Отлично, все понравилось', 'text' => '', 'img' => 'about/raccoon.png', 'img_alt' => 'Енот')
+array ('fio' => 'g_t', 'name' => 'rt', 'patronymic' => 'erty', 'email' => 'fggtt@hhhjy.ru', 'rate' => 'Отлично, все понравилось', 'text' => '', 'img' => 'about/raccoon.png', 'img_alt' => 'Енот'),
+array ('fio' => 'g_t', 'name' => 'rt', 'patronymic' => 'erty', 'email' => 'fggtt@hhhjy.ru', 'rate' => 'Ужасно, никому не рекомендую', 'text' => '', 'img' => 'about/raccoon.png', 'img_alt' => 'Енот'),
+array ('fio' => 'g_t', 'name' => 'rt', 'patronymic' => 'erty', 'email' => 'fggtt@hhhjy.ru', 'rate' => 'Ужасно, никому не рекомендую', 'text' => '', 'img' => 'about/raccoon.png', 'img_alt' => 'Енот')

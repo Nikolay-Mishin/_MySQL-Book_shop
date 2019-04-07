@@ -15,6 +15,16 @@ function escape ($str, $db) {
     return $str; 
 }
 
+function load ($page, $args = []) {
+    extract ($args);
+    view (HEAD, compact ('title')); 
+    //view (BOOKS.name(), compact ('books'));
+    view ($page, $args); // main
+    if (key_exists ('redirect', $args)) redirect ($redirect);
+    view (FOOT);
+    return $args;
+}
+
 function view ($page, $data = []) {
     extract ($data);
     $page .= '.html';
@@ -127,8 +137,7 @@ function reg ($db, $login, $password, $email) {
             `user_password` = '$secured_password',
             `user_email` = '$email';
     ";
-    $result = mysqli_query ($db, $query); 
-    redirect();
+    $result = mysqli_query ($db, $query);
 }
 
 function auth ($db, $email, $password) {
@@ -163,35 +172,16 @@ function auth ($db, $email, $password) {
         "; 
         mysqli_query ($db, $query);
         $_SESSION['token'] = $token; 
+        close ($db);
         redirect();
     } 
     else echo '<p> Неверная связка логин / пароль </p>'; 
 }
 
-function test ($data) { echo '<pre>'; print_r ($data); echo '</pre>'; };
-function info ($path) { return pathinfo ($path); };
-function name () { return info ($_SERVER ['PHP_SELF'])['filename']; };
-function data_file () { return name().'.txt'; };
-
-function load ($data, $page, $args = [], $aside = 0) {
-    if (info ($data)['filename'] == '_redirect') $data .= 'main';
-    require_once "$data.php"; // Data
-    $data = compact ($args);
-    require_once C.'head.php'; // head
-    require_once C.'header.php'; // header
-    require_once C.'wrapper.php'; // wrapper
-    if ($aside == 1) require_once C.'aside.php'; // aside
-    _view ($page, $data); // main
-    if (in_array ('file_write', $args)) file_write ($data['filename'], $_POST);
-    if (key_exists ('redirect', $data)) redirect ($redirect);
-    include_once C.'footer.php'; // footer
-    include_once C.'scriptside.php'; // scriptside
-    return $data;
-}
-
-function mb_strcasecmp ($str_1, $str_2, $encoding = null) {
-    if (null === $encoding) { $encoding = mb_internal_encoding(); }
-    return strcmp (mb_strtolower ($str_1, $encoding), mb_strtolower ($str_2, $encoding));
+function logout () {
+    session_unset(); 
+    setcookie ('u', $_COOKIE['u'], time() - 100);
+    redirect();
 }
 
 function redirect ($t = 0, $url = null) {
@@ -206,5 +196,31 @@ function redirect_page () { return Controller::_()->_ref(); }
 
 function redirect_out ($redirect, $url) {
     return "Через $redirect сек. Вы будете перенаправлены на страницу: " . pathinfo ($url)['basename'];
+}
+
+function mb_strcasecmp ($str_1, $str_2, $encoding = null) {
+    if (null === $encoding) { $encoding = mb_internal_encoding(); }
+    return strcmp (mb_strtolower ($str_1, $encoding), mb_strtolower ($str_2, $encoding));
+}
+
+function test ($data) { echo '<pre>'; print_r ($data); echo '</pre>'; };
+function info ($path) { return pathinfo ($path); };
+function name () { return info ($_SERVER ['PHP_SELF'])['filename']; };
+function data_file () { return name().'.txt'; };
+
+function _load ($data, $page, $args = [], $aside = 0) {
+    if (info ($data)['filename'] == '_redirect') $data .= 'main';
+    require_once "$data.php"; // Data
+    $data = compact ($args);
+    require_once C.'head.php'; // head
+    require_once C.'header.php'; // header
+    require_once C.'wrapper.php'; // wrapper
+    if ($aside == 1) require_once C.'aside.php'; // aside
+    view ($page, $data); // main
+    if ($file_write) file_write ($data['filename'], $_POST);
+    if (key_exists ('redirect', $data)) redirect ($redirect);
+    require_once C.'footer.php'; // footer
+    require_once C.'scriptside.php'; // scriptside
+    return $data;
 }
 ?>

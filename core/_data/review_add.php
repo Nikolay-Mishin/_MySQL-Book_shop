@@ -7,6 +7,6 @@ $set_redirect = true;
 
 require_once _DR.'main.php'; // Data: Redirect
 $redirect_title = 'Отзыв успешно отправлен!';
-$url = $_COOKIE['r'];
+$url = isset ($url) ? $_COOKIE['r'] : '';
 $out = redirect_out ($redirect, $url);
 ?>
