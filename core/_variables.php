@@ -29,12 +29,8 @@ define ('Awesome', FONTS.'fontawesome-5.7.2/');
 define ('TEMPS', 'templates/');
 define ('_RED', TEMPS._R);
 define ('COMN', TEMPS._COMN);
-define ('T_MAIN', TEMPS.'main/');
-define ('ABOUT', TEMPS.'about/');
-define ('NEWS', TEMPS.'news/');
-define ('REVS', TEMPS.'reviews/');
-define ('CONT', TEMPS.'contacts/');
-define ('GALL', TEMPS.'gallery/');
+define ('REG', TEMPS.'reg/');
+define ('AUTH', TEMPS.'auth/');
 
 // Имена основных шаблонов
 define ('HEAD', 'head');

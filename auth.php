@@ -14,7 +14,7 @@ if (isset ($_POST['email']) && isset ($_POST['password'])) {
 
 $title = 'Авторизация'; 
 
-view ('templates/common/head', compact ('title')); 
-view ('templates/common/auth'); 
-view ('templates/common/footer');
+view (COMN.HEAD, compact ('title')); 
+view (COMN.AUTH); 
+view (COMN.FOOT);
 ?>

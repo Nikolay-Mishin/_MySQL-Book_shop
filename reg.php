@@ -26,15 +26,15 @@ if (isset ($_POST['login']) && isset ($_POST['password']) && isset ($_POST['pass
     else {
         $title = 'Регистрация'; 
 
-        view ('templates/common/head', compact ('title')); 
-        view ('templates/common/reg', array ('errors' => $errors)); 
-        view ('templates/common/footer');
+        view (COMN.HEAD, compact ('title')); 
+        view (COMN.REG, array ('errors' => $errors)); 
+        view (COMN.FOOT);
     }
 }
 
 $title = 'Регистрация'; 
 
-view ('templates/common/head', compact ('title')); 
-view ('templates/common/reg'); 
-view ('templates/common/footer');
+view (COMN.HEAD, compact ('title')); 
+view (COMN.REG); 
+view (COMN.FOOT);
 ?>
