@@ -2,16 +2,15 @@
 <html> 
 <head>
     <title> <?= $title ?></title>
-    <link rel="stylesheet" href="./resources/libs/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="./resources/libs/fontawesome/css/all.css">
-    <link rel="stylesheet" href="./resources/css/style.css">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="<?= LIBS.'bootstrap/css/bootstrap.css' ?>">
+    <link rel="stylesheet" href="<?= LIBS.'fontawesome/css/all.css' ?>">
+    <link rel="stylesheet" href="<?= CSS.'style.css' ?>">
 </head> 
 
 <body> 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="navbar-nav">
-            <? $url = 'authors.php'; if (!preg_match("/(admin)(\/)(.)/", $_SERVER['SCRIPT_NAME'])) $url = 'admin/authors.php'; ?>
+            <? $url = DIR === '../' ? 'authors.php' : 'admin/authors.php'; ?>
             <a class="nav-item nav-link <?= ($title == 'Авторы')? 'active': '' ?>" href="<?= $url ?>">Авторы </a>
             <a class="nav-item nav-link <?= ($title == 'Книги')? 'active': '' ?>" href="books.php">Книги </a>
             <? if (!checkUserIsAuthorized()): ?>

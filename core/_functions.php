@@ -1,6 +1,4 @@
 <?php
-//require_once 'redirect.php';
-
 function connect () {
     $db = mysqli_connect ('localhost', 'root', '', '_book_shop'); 
     mysqli_set_charset ($db, 'utf8');
@@ -15,20 +13,19 @@ function escape ($str, $db) {
     return $str; 
 }
 
-function load ($page, $args = []) {
-    extract ($args);
-    view (HEAD, compact ('title')); 
-    //view (BOOKS.name(), compact ('books'));
-    view ($page, $args); // main
-    if (key_exists ('redirect', $args)) redirect ($redirect);
+function load ($page, $title, $args = []) {
+    view (HEAD, compact ('title'));
+    if (!is_array ($page)) { view ($page, $args); } // main
+    else { foreach ($page as $key => $item) { view ($item, $args[$key]); } }
+    //if (key_exists ('redirect', $args)) redirect ($redirect);
     view (FOOT);
     return $args;
 }
 
-function view ($page, $data = []) {
+function view ($file, $data = []) {
     extract ($data);
-    $page .= '.html';
-    if (file_exists ($page)) require_once $page; 
+    $file .= '.html';
+    if (file_exists ($file)) require_once $file; 
 }
 
 function checkUserIsAuthorized () {
@@ -203,12 +200,14 @@ function mb_strcasecmp ($str_1, $str_2, $encoding = null) {
     return strcmp (mb_strtolower ($str_1, $encoding), mb_strtolower ($str_2, $encoding));
 }
 
-function test ($data) { echo '<pre>'; print_r ($data); echo '</pre>'; };
-function info ($path) { return pathinfo ($path); };
 function name () { return info ($_SERVER ['PHP_SELF'])['filename']; };
-function data_file () { return name().'.txt'; };
 
-function _load ($data, $page, $args = [], $aside = 0) {
+function info ($path) { return pathinfo ($path); };
+// function data_file () { return name().'.txt'; };
+
+function test ($data) { echo '<pre>'; print_r ($data); echo '</pre>'; };
+
+/* function _load ($data, $page, $args = [], $aside = 0) {
     if (info ($data)['filename'] == '_redirect') $data .= 'main';
     require_once "$data.php"; // Data
     $data = compact ($args);
@@ -222,5 +221,5 @@ function _load ($data, $page, $args = [], $aside = 0) {
     require_once C.'footer.php'; // footer
     require_once C.'scriptside.php'; // scriptside
     return $data;
-}
+} */
 ?>

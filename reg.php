@@ -1,13 +1,9 @@
 <?php
 require_once 'core/main.php';
 
-// require_once ('form-validate.php');
+$title = 'Регистрация'; 
 
-/* if (in_array (false, $validate)) $validate[] = 'error';
-if (in_array ('error', $validate)) print_r ($validate);
-print_r ($validate); */
-
-session_start(); 
+session_start();
 set_redirect();
 
 if (isset ($_POST['login']) && isset ($_POST['password']) && isset ($_POST['password_dub']) && isset ($_POST['email'])) {
@@ -23,17 +19,10 @@ if (isset ($_POST['login']) && isset ($_POST['password']) && isset ($_POST['pass
         auth ($db, $email, $password);
     } 
     else {
-        $title = 'Регистрация'; 
-
-        view (HEAD, compact ('title')); 
-        view (REG, array ('errors' => $errors)); 
-        view (FOOT);
+        load (REG, $title, compact ('errors'));
+        exit;
     }
 }
 
-$title = 'Регистрация'; 
-
-view (HEAD, compact ('title')); 
-view (REG); 
-view (FOOT);
+load (REG, $title, compact ('title'));
 ?>

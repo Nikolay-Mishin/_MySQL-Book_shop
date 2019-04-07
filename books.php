@@ -1,6 +1,8 @@
 <?php
 require_once 'core/main.php';
 
+$title = 'Книги';
+
 $db = connect(); 
 $query = "SELECT `book_id` AS `id`, 
                     `book_name`, 
@@ -18,10 +20,5 @@ $result = mysqli_query ($db, $query);
 $books = mysqli_fetch_all ($result, MYSQLI_ASSOC);
 mysqli_close ($db); 
 
-$title = 'Книги';
-
-load (BOOKS.name(), compact ('title', 'books'));
-/* view (HEAD, compact ('title')); 
-view (BOOKS.name(), compact ('books')); 
-view (FOOT);  */
+load (BOOKS.name(), $title, compact ('books'));
 ?>
