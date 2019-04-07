@@ -12,20 +12,24 @@
 	  <div class="input-group-prepend">
 		<label class="input-group-text" for="inputGroupSelect01">Options</label>
 	  </div>
-	  <select class="custom-select" id="inputGroupSelect01">
-		<option value="2" <?= ($count == 2)? 'selected': '' ?>>2</option>
-		<option value="5" <?= ($count == 5)? 'selected': '' ?>>5</option>
-		<option value="10" <?= ($count == 10)? 'selected': '' ?>>10</option>
+	  <select class="custom-select" id="inputGroupSelect01" name="count">
+		<option value="2" <?= ($count == 2) ? 'selected' : '' ?>>2</option>
+		<option value="5" <?= ($count == 5) ? 'selected' : '' ?>>5</option>
+		<option value="10" <?= ($count == 10) ? 'selected' : '' ?>>10</option>
 	  </select>
 	</div>
 	<div class="input-group mb-3">
 	  <div class="input-group-prepend">
 		<span class="input-group-text" id="basic-addon1">Фильтр</span>
 	  </div>
-	  <input type="text" class="form-control" placeholder="Имя автора" aria-label="Username" aria-describedby="basic-addon1" value="<?= $filter; ?>">
+	  <input type="text" name="filter" class="form-control" placeholder="Имя автора" aria-label="Username" aria-describedby="basic-addon1" value="<?= $filter; ?>">
 	</div>
 	<div class="input-group mb-3">
-	  <button type="button" class="btn btn-primary"> Фильтровать </button> 
+	  <button type="button" class="btn btn-primary">
+          <a href="" id="pagination" style="color: white">
+              Фильтровать
+          </a> 
+      </button> 
 	</div>
 </div>
 <table border='1'>

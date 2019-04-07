@@ -2,7 +2,7 @@
 require_once '../core/main.php';
 
 $title = 'Авторы';
-
+test ($_GET);
 $count = $_GET['count'] ?? 2; 
 $page = $_GET['page'] ?? 1; 
 $filter = $_GET['filter'] ?? ''; 
