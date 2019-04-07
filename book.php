@@ -21,7 +21,7 @@ if (isset ($_GET['id'])) {
     "; 
     $result = mysqli_query ($db, $query);
     $book = mysqli_fetch_assoc ($result);
-    mysqli_close ($db);
+    close ($db);
 
     $mark = $book['mark']; 
     $user_id = $_COOKIE['u'] ?? ""; 

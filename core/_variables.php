@@ -3,17 +3,16 @@ define ('UP', '../');
 
 // Основные директории подключаемых файлов
 define ('CORE', 'core/');
-define ('_C', '_classes/');
-define ('D', '_data/');
-define ('R', '_redirect/');
-define ('__C', 'common/');
-define ('_D', CORE.D);
-define ('_R', CORE.R);
-define ('C', CORE.__C);
+define ('_R', '_redirect/');
+define ('_COMN', 'common/');
+define ('_C', CORE.'_classes/'); // core/_classes/
+define ('D', CORE.'_data/'); // core/_data/
+define ('R', CORE._R); // core/_redirect/
+define ('C', CORE._COMN); // core/common/
 
 // Внутренние директории подключаемых файлов
-define ('_DC', _D.__C); // _data/common/
-define ('_DR', _D.R); // _data/_redirect/
+define ('DC', D._COMN); // core/_data/common/
+define ('DR', D._R); // core/_data/_redirect/
 
 // Основные директории
 define ('RES', 'resources/');
@@ -28,8 +27,8 @@ define ('Awesome', FONTS.'fontawesome-5.7.2/');
 
 // Шаблоны
 define ('TEMPS', 'templates/');
-define ('_RED', TEMPS.'_redirect/');
-define ('COMN', TEMPS.'common/');
+define ('_RED', TEMPS._R);
+define ('COMN', TEMPS._COMN);
 define ('T_MAIN', TEMPS.'main/');
 define ('ABOUT', TEMPS.'about/');
 define ('NEWS', TEMPS.'news/');

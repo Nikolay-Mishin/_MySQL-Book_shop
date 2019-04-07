@@ -1,11 +1,13 @@
 <?php
 //require_once 'redirect.php';
 
-function connect() {
+function connect () {
     $db = mysqli_connect ('localhost', 'root', '', '_book_shop'); 
     mysqli_set_charset ($db, 'utf8');
     return $db; 
 }
+
+function close ($db) { mysqli_close ($db); }
 
 function escape ($str, $db) {
     $str = htmlentities ($str); 
@@ -118,6 +120,7 @@ function validate ($db, $login, $password, $password2, $email, $errors = []) {
 
 function reg ($db, $login, $password, $email) {
     $secured_password = md5 ($password); 
+
     $query = "INSERT INTO `users` 
         SET `user_id` = LAST_INSERT_ID(),
             `user_login` = '$login', 
@@ -128,15 +131,13 @@ function reg ($db, $login, $password, $email) {
     redirect();
 }
 
-function auth () {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    $db = connect(); 
+function auth ($db, $email, $password) {
+    $secured_password = md5 ($password);
+     
     $query = "SELECT `user_id` 
         FROM `users`
         WHERE `user_email` = '$email'
-        AND `user_password` = $password
+        AND `user_password` = $secured_password
     ";
     $query = "SELECT `user_id` 
         FROM `users`

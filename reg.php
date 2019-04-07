@@ -16,11 +16,12 @@ if (isset ($_POST['login']) && isset ($_POST['password']) && isset ($_POST['pass
     $password2 = $_POST['password_dub']; 
     $email = $_POST['email']; 
 
-    $db = connect(); 
+    $db = connect();
     $errors = validate ($db, $login, $password, $password2, $email);
     if (empty ($errors)) { 
         reg ($db, $login, $password, $email);
-        auth();
+        auth ($db, $email, $password);
+        close ($db);
     } 
     else {
         $title = 'Регистрация'; 
