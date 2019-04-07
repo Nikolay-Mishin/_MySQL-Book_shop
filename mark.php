@@ -11,7 +11,7 @@ if (isset ($_GET['mark']) && isset ($_GET['book'])) {
         VALUE ($user, $book, $mark)
     ";
     mysqli_query ($db, $query);
-    mysqli_close ($db);
+    close ($db);
     redirect();
 }
 ?>

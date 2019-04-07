@@ -18,7 +18,7 @@ $query = "SELECT `book_id` AS `id`,
 ";
 $result = mysqli_query ($db, $query);
 $books = mysqli_fetch_all ($result, MYSQLI_ASSOC);
-mysqli_close ($db); 
+close ($db); 
 
 load (BOOKS.name(), $title, compact ('books'));
 ?>
