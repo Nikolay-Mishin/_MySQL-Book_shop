@@ -19,8 +19,8 @@ if (isset ($_POST['book_name'])) {
     $books_price = escape ($_POST['book_price'], $db); 
 
     // загружаем данные в таблицу books; 
-    $query = "INSERT INTO `authors` (`author_name`) VALUE ('$author_name')"; 
-    // заносим данные в промежуточную таблицу books_authors; 
+    $query = "INSERT INTO `books` (`book_name`) VALUE ('$book_name')"; 
+    // заносим данные в промежуточную таблицу books_books; 
     mysqli_query ($db, $query); 
     if (!mysqli_error ($db)) {
         redirect();

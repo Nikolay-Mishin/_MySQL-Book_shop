@@ -3,35 +3,40 @@ require_once '../core/main.php';
 
 $title = 'Книги';
 
+$count = $_GET['count'] ?? 2; 
+$page = $_GET['page'] ?? 1; 
+$filter = $_GET['filter'] ?? ''; 
+$offset = $count * ($page - 1); 
+
 $db = connect(); 
 $query = "SELECT `book_id` AS `id`, 
                     `book_name`, 
                     `book_price`, 
                     `publisher_name`, 
                     `book_quantity`, 
-                    GROUP_CONCAT(`author_name`) AS `author_names`
+                    GROUP_CONCAT(`author_name`) AS `author`
             FROM `books`
             LEFT JOIN `publishers` ON `book_publisher_id` = `publisher_id`
             LEFT JOIN `books_authors` ON `book_author_book_id` = `book_id`
             LEFT JOIN `authors` ON `author_id` = `book_author_author_id`
-            GROUP BY `book_id`;
+            WHERE `book_is_deleted` = 0
+                AND `book_name` LIKE '%$filter%'
+            GROUP BY `book_id`
+            LIMIT $offset, $count
             "; 
 $result = mysqli_query ($db, $query);
 $books = mysqli_fetch_all ($result, MYSQLI_ASSOC);
-$text = ""; 
-$text .= "<table border='1'><tr><th> ID </th> <th> Название </th> <th> Цена </th> <th> Издатель </th> <th> Количество </th> <th> Авторы </th></tr> "; 
-foreach ($books as $book) {
-    $text .= "<tr> 
-                <td> $book[id] </td> 
-                <td> $book[book_name] </td> 
-                <td> $book[book_price] </td> 
-                <td> $book[publisher_name] </td> 
-                <td> $book[book_quantity] </td>
-                <td> $book[author_names] </td> 					
-            </tr>"; 
-}
-$text .= "</table>";
+$result1 = mysqli_query ($db, "SELECT FOUND_ROWS()");
+$num_rows = mysqli_fetch_row ($result1)[0];
+$pages_count = ceil ($num_rows / $count);
 close ($db); 
 
-load (_BOOKS.name(), $title, compact ('text'));
+test ($books);
+test ($num_rows);
+
+$url = "./books.php?count=$count&"; 
+
+$pages = [_BOOKS.name(), PAGINAT];
+$args = [compact ('books', 'count', 'filter'), compact ('page', 'pages_count', 'url')];
+load ($pages, $title, $args);
 ?>

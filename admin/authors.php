@@ -21,6 +21,9 @@ $num_rows = mysqli_fetch_row ($result1)[0];
 $pages_count = ceil ($num_rows / $count);
 close ($db); 
 
+test ($authors);
+test ($num_rows);
+
 $url = "./authors.php?count=$count&"; 
 
 $pages = [_AUTHORS.name(), PAGINAT];
