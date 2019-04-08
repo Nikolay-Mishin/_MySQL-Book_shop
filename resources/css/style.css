@@ -24,6 +24,9 @@ body {
 .rate_book { cursor: pointer; }
 .rate_stars { width: fit-content; }
 
+.btn-link { padding: 0; height: fit-content; }
+.btn-link > a { padding: 12px 18px; }
+
 .center {
     position: absolute;
     left: 50%;
