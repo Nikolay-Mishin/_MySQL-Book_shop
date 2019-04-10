@@ -27,20 +27,13 @@ $query = "SELECT `book_id` AS `id`,
 $result = mysqli_query ($db, $query);
 $books = mysqli_fetch_all ($result, MYSQLI_ASSOC);
 
-$query = "SELECT SQL_CALC_FOUND_ROWS * 
-        FROM `books` 
-        WHERE `book_is_deleted` = 0
-             AND `book_name` LIKE '%$filter%'
-        LIMIT $offset, $count"; 
-mysqli_query ($db, $query);
-$result = mysqli_query ($db, "SELECT FOUND_ROWS()");
-$num_rows = mysqli_fetch_row ($result)[0];
-$pages_count = ceil ($num_rows / $count);
+query_found_rows ($db, $offset, $count, 'books', ['book_is_deleted' => 0], ['book_name' => "$filter"]);
+$pages_count = query_get_rows ($db, $count);
 close ($db); 
 
 $url = "./books.php?count=$count&"; 
 
 $pages = [_BOOKS.name(), PAGINAT];
-$args = [compact ('books', 'count', 'filter'), compact ('page', 'pages_count', 'url')];
+$args = [compact ('books', 'count', 'filter', 'url'), compact ('page', 'pages_count', 'url')];
 load ($pages, $title, $args);
 ?>

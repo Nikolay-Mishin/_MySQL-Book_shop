@@ -1,32 +1,22 @@
 <?php
 require_once '../core/main.php';
 
-$title = 'Редактировать автора'; 
+$title = 'Редактировать автора';
 
 set_redirect();
 
-$db = connect(); 
+$db = connect();
 if (isset ($_GET['id'])) {
-    $author_id = $_GET['id']; 
-
-    $query = "SELECT * FROM `authors` WHERE `author_id` = $author_id"; 
-    $result = mysqli_query ($db, $query); 
-    $author = mysqli_fetch_assoc ($result);		
-    // обработка если значение id нет в таблице 
+    $author_id = $_GET['id'];
+    $author = query_select ($db, 'authors', '*', ['author_id' => $author_id]);
+    // обработка если значение id нет в таблице
 }
+
 if (isset ($_POST['author_name'])) {
-    $author_name = escape ($_POST['author_name'], $db); 
-
-    $query = "UPDATE `authors` 
-                SET `author_name`  = '$author_name' 
-                WHERE `author_id` = $author_id;"; 
-    mysqli_query ($db, $query); 
-    if (!mysqli_error ($db)) {
-        redirect();
-    } else {
-        // дописать если есть ошибки 
-    }
-
+    $author_name = escape ($_POST['author_name'], $db);
+    query_edit ($db, 'authors', ['author_name' => $author_name], ['author_id' => $author_id]);
+    if (!mysqli_error ($db)) { redirect(); }
+    else { test (mysqli_error ($db)); }
 }
 close ($db);
 

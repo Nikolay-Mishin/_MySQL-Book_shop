@@ -5,30 +5,20 @@ $title = 'Добавить книгу';
 
 set_redirect();
 
-$db = connect(); 
-$query = "SELECT * FROM `publishers`"; 
-$result = mysqli_query ($db, $query); 
-$publishers = mysqli_fetch_all ($result, MYSQLI_ASSOC);
-$query1 = "SELECT * FROM `authors` WHERE `author_is_deleted` = 0"; 
-$result1 = mysqli_query ($db, $query1); 
-$authors = mysqli_fetch_all ($result1, MYSQLI_ASSOC);
+$db = connect();
+$publishers = query_select ($db, 'publishers', '*');
+$authors = query_select ($db, 'authors', '*', ['author_is_deleted' => 0]);
 
 if (isset ($_POST['book_name'])) {
-    // не забываем обернуть в функцию htmlentities и mysqli_real_escape_string; 
     $book_name = escape ($_POST['book_name'], $db);
-    $books_price = escape ($_POST['book_price'], $db); 
-
-    // загружаем данные в таблицу books; 
-    $query = "INSERT INTO `books` (`book_name`) VALUE ('$book_name')"; 
-    // заносим данные в промежуточную таблицу books_books; 
-    mysqli_query ($db, $query); 
-    if (!mysqli_error ($db)) {
-        redirect();
-    } else {
-        // дописать если есть ошибки 
-    }
+    $books_price = escape ($_POST['book_price'], $db);
+    $book_author = escape ($_POST['book_author'], $db);
+    query_add ($db, 'books', ['book_name' => $book_name, 'book_price' => $books_price]);
+    // query_add ($db, 'books_authors', ['book_author_book_id' => $book_id, 'book_author_author_id' => $book_author]);
+    if (!mysqli_error ($db)) { redirect(); }
+    else { test (mysqli_error ($db)); }
 }
-close ($db); 
+close ($db);
 
 load (_BOOKS.name(), $title, compact ('publishers', 'authors'));
 ?>

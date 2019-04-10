@@ -1,7 +1,8 @@
 <?php
 define ('BASE_DIR', '/_git/_MySQL/_MySQL-Book_shop/');
-$pattern = str_replace ('/', '\/', BASE_DIR);
-define ('DIR', !preg_match ('/^admin\//', preg_split ("/$pattern/", $_SERVER['REQUEST_URI'])[1]) ? './' : '../');
+
+$pattern = strtolower (str_replace ('/', '\/', BASE_DIR));
+define ('DIR', !preg_match ('/admin\//', preg_split ("/$pattern/", strtolower ($_SERVER['REQUEST_URI']))[1]) ? './' : '../');
 
 // Основные директории подключаемых файлов
 define ('A', 'admin/');
