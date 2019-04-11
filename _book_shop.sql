@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Апр 11 2019 г., 00:55
+-- Время создания: Апр 11 2019 г., 02:08
 -- Версия сервера: 10.1.37-MariaDB
 -- Версия PHP: 7.3.1
 
@@ -178,7 +178,6 @@ INSERT INTO `connects` (`connect_id`, `connect_user_id`, `connect_token`, `conne
 (99, 1, '2rxbtsn2vjx7lrp6zupg93wi5hwgv4n6', '2019-04-07 15:27:29', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
 (100, 1, '2h52yf2g3vvb8ow5ju1odabf4lkje4ao', '2019-04-07 15:27:39', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
 (102, 1, '0hvihoynttphqbsm4dc6eeys6nbska0d', '2019-04-07 15:40:17', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
-(103, 16, 'tribb3ae0ymbqqcv6o1exxkuw7sqxsyu', '2019-04-07 15:40:28', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
 (104, 1, '3x2jix9qnx7l0f6tgxzfh01zxkrhgh9t', '2019-04-07 15:43:15', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
 (105, 1, 'vbi9o0n9jnkpkagqle9zkyz9ep0j30ab', '2019-04-07 15:53:07', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
 (106, 1, 'wcywlxjehuh4pp0ti8mc5vb0n63mzlcr', '2019-04-07 20:12:26', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
@@ -188,7 +187,11 @@ INSERT INTO `connects` (`connect_id`, `connect_user_id`, `connect_token`, `conne
 (110, 1, '87axatce7ufontm19ceqgqoref4z57gz', '2019-04-08 19:17:59', 'feouuh2ksoerd2e0v6pv3ngne1'),
 (111, 1, 'ni7jwxsh2gdmswnu6l00po08j45s77kr', '2019-04-09 02:45:18', 'vuvp89arfqfdbqmplqqko17f1c'),
 (112, 1, 'r96ko9l2h8ul34g2xe5o9kzl9c626tmk', '2019-04-11 02:03:43', 'prt979l7s8q8440c90f2idb0ho'),
-(113, 1, 'nmt9zhom6sraao0v21l9vt9bot52txwf', '2019-04-11 02:09:36', 'prt979l7s8q8440c90f2idb0ho');
+(113, 1, 'nmt9zhom6sraao0v21l9vt9bot52txwf', '2019-04-11 02:09:36', 'prt979l7s8q8440c90f2idb0ho'),
+(114, 1, 'l550gyxcmxmw163ujye5fir56yfnbwql', '2019-04-11 03:15:12', 'prt979l7s8q8440c90f2idb0ho'),
+(115, 1, '69gnkiy9ai88b6gu044smdfyqrvlqmnq', '2019-04-11 03:15:40', 'prt979l7s8q8440c90f2idb0ho'),
+(116, 6, '656xkjwpobjrrxp9mo3x4nd4fco174v9', '2019-04-11 03:16:30', 'prt979l7s8q8440c90f2idb0ho'),
+(117, 6, 'x24sacv0vlxjs00vl2ozwcs381x67j2g', '2019-04-11 03:18:24', 'prt979l7s8q8440c90f2idb0ho');
 
 -- --------------------------------------------------------
 
@@ -357,10 +360,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `user_name`, `user_login`, `user_email`, `user_password`, `user_birthdate`, `user_gender_id`, `user_address`, `user_phone`, `user_is_admin`) VALUES
-(1, NULL, NULL, 'abc@email.com', '123', NULL, NULL, NULL, NULL, NULL),
+(1, NULL, 'admin', 'abc@email.com', '123', NULL, NULL, NULL, NULL, NULL),
 (6, NULL, 'gg', 'fggtt@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL),
-(13, NULL, 'gg1', 'fgg1@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL),
-(16, NULL, 'gg2', 'fgg2@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL);
+(13, NULL, 'gg1', 'fgg1@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Индексы сохранённых таблиц
@@ -464,7 +466,7 @@ ALTER TABLE `books_authors`
 -- AUTO_INCREMENT для таблицы `connects`
 --
 ALTER TABLE `connects`
-  MODIFY `connect_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `connect_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
 
 --
 -- AUTO_INCREMENT для таблицы `genders`
