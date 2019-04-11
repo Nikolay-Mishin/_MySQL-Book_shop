@@ -188,11 +188,12 @@ function query_select ($db, $table, $cols, $condition = null, $filter = null, $o
     $group_by = $group_by ? "GROUP BY `$group_by`" : '';
 
     $query = "SELECT $cols FROM `$table` $join $condition $group_by $limit;";
-    if ($cols === '*') { $query = "SELECT * FROM `$table` $condition $limit $group_by;"; }
+    if ($cols === '*') { $query = "SELECT * FROM `$table` $join $condition $group_by $limit;"; }
     echo $query.'<br>';
 
     $result = mysqli_query ($db, $query);
     if (mysqli_num_rows ($result)) {
+        if ($offset !== null) return mysqli_fetch_all ($result, MYSQLI_ASSOC);
         return $result->num_rows > 1 ? mysqli_fetch_all ($result, MYSQLI_ASSOC) : mysqli_fetch_assoc ($result);
     }
     else { return false; }
