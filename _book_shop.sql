@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Мар 25 2019 г., 01:22
+-- Время создания: Апр 11 2019 г., 00:55
 -- Версия сервера: 10.1.37-MariaDB
 -- Версия PHP: 7.3.1
 
@@ -37,6 +37,10 @@ CREATE TABLE `authors` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- ССЫЛКИ ТАБЛИЦЫ `authors`:
+--
+
+--
 -- Дамп данных таблицы `authors`
 --
 
@@ -49,7 +53,22 @@ INSERT INTO `authors` (`author_id`, `author_name`, `author_is_deleted`) VALUES
 (6, 'Булгаков', 0),
 (7, 'gfkasjdgfk', 1),
 (8, '', 1),
-(9, 'asfasfa', 1);
+(9, 'asfasfa', 1),
+(10, '', 1),
+(11, '', 1),
+(12, 'Рэки Кавахара', 0),
+(13, '', 1),
+(14, 'Шекспир', 0),
+(15, 'Анна Каренина', 0),
+(16, 'Гёте', 0),
+(17, 'Дарья Донцова', 0),
+(18, 'Сборник', 1),
+(19, 'Рэки Кавахара', 1),
+(20, 'Рэки', 1),
+(21, 'Агата Кристи', 0),
+(22, 'Толстой', 1),
+(23, 'Агата', 1),
+(24, 'Кристина', 1);
 
 -- --------------------------------------------------------
 
@@ -69,20 +88,32 @@ CREATE TABLE `books` (
   `book_language_id` smallint(5) UNSIGNED DEFAULT NULL,
   `book_image` varchar(255) DEFAULT NULL,
   `book_isbn` char(13) DEFAULT NULL,
-  `book_average_mark` float(3,2) UNSIGNED NOT NULL
+  `book_average_mark` float(3,2) UNSIGNED NOT NULL,
+  `book_is_deleted` tinyint(1) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- ССЫЛКИ ТАБЛИЦЫ `books`:
+--   `book_publisher_id`
+--       `publishers` -> `publisher_id`
+--
 
 --
 -- Дамп данных таблицы `books`
 --
 
-INSERT INTO `books` (`book_id`, `book_name`, `book_price`, `book_publisher_id`, `book_year`, `book_description`, `book_quantity`, `book_binding_id`, `book_language_id`, `book_image`, `book_isbn`, `book_average_mark`) VALUES
-(1, 'Евгений Онегин', 359, 1, 2010, NULL, 5, NULL, NULL, NULL, NULL, 5.00),
-(2, 'Преступление и наказание', 349, 4, 2011, NULL, 10, NULL, NULL, NULL, NULL, 4.33),
-(3, 'Мастер и Маргарита', 500, 1, 2010, NULL, 10, NULL, NULL, NULL, NULL, 3.00),
-(4, 'Капитанская дочка', 320, 4, 2013, NULL, 22, NULL, NULL, NULL, NULL, 3.50),
-(5, 'Сборник стихотворений', 450, 3, 2015, NULL, 20, NULL, NULL, NULL, NULL, 4.00),
-(6, 'Сборник Сказок', 400, 3, 2010, NULL, NULL, NULL, NULL, NULL, NULL, 2.00);
+INSERT INTO `books` (`book_id`, `book_name`, `book_price`, `book_publisher_id`, `book_year`, `book_description`, `book_quantity`, `book_binding_id`, `book_language_id`, `book_image`, `book_isbn`, `book_average_mark`, `book_is_deleted`) VALUES
+(1, 'Евгений Онегин', 359, 1, 2010, NULL, 5, NULL, NULL, NULL, NULL, 5.00, 0),
+(2, 'Преступление и наказание', 349, 4, 2011, NULL, 10, NULL, NULL, NULL, NULL, 4.33, 0),
+(3, 'Мастер и Маргарита', 500, 1, 2010, NULL, 10, NULL, NULL, NULL, NULL, 3.00, 0),
+(4, 'Капитанская дочка', 320, 4, 2013, NULL, 22, NULL, NULL, NULL, NULL, 3.50, 0),
+(5, 'Сборник стихотворений', 450, 3, 2015, NULL, 20, NULL, NULL, NULL, NULL, 4.00, 0),
+(6, 'Сборник Сказок', 400, 3, 2010, NULL, NULL, NULL, NULL, NULL, NULL, 2.00, 0),
+(7, 'Карнелион', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
+(8, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
+(9, 'Монти Оум', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
+(10, 'Золотая рыба', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
+(11, 'Дюймовочка', 200, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0);
 
 -- --------------------------------------------------------
 
@@ -95,6 +126,14 @@ CREATE TABLE `books_authors` (
   `book_author_book_id` int(10) UNSIGNED NOT NULL,
   `book_author_author_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- ССЫЛКИ ТАБЛИЦЫ `books_authors`:
+--   `book_author_author_id`
+--       `authors` -> `author_id`
+--   `book_author_book_id`
+--       `books` -> `book_id`
+--
 
 --
 -- Дамп данных таблицы `books_authors`
@@ -123,14 +162,33 @@ CREATE TABLE `connects` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- ССЫЛКИ ТАБЛИЦЫ `connects`:
+--   `connect_user_id`
+--       `users` -> `user_id`
+--
+
+--
 -- Дамп данных таблицы `connects`
 --
 
 INSERT INTO `connects` (`connect_id`, `connect_user_id`, `connect_token`, `connect_token_time`, `connect_session`) VALUES
 (2, 1, 'sink1bbibqzpbxy7v5i28k2edg8aonko', '2019-03-16 13:22:46', '1mm1rfmm6mq5esaejml7im837l'),
-(71, 6, 'tf9yxcf9ryhf5i82suwbek93ott3cdl5', '2019-03-25 02:42:39', '1u3oge25tev0djhd22jmcqj8i1'),
-(72, 1, '8559e92ghm2nlcofgppfyg3iyqyo8ep4', '2019-03-25 02:49:14', '1u3oge25tev0djhd22jmcqj8i1'),
-(73, 1, 'vvz39d0om3oq09p9s6x3wu4m4xi1ykgm', '2019-03-25 03:24:54', '1u3oge25tev0djhd22jmcqj8i1');
+(94, 13, 'azvankvd7fnje84h4cutttsn97hx4mid', '2019-04-06 22:57:10', 'lcf4539jtdoobqh6a4lmvmsqsb'),
+(98, 1, 'e0y4mecbqfgcl0ypr79l2vrum5mqm661', '2019-04-07 12:57:20', 'p5meea44i2m9h67olqp8svt7gi'),
+(99, 1, '2rxbtsn2vjx7lrp6zupg93wi5hwgv4n6', '2019-04-07 15:27:29', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
+(100, 1, '2h52yf2g3vvb8ow5ju1odabf4lkje4ao', '2019-04-07 15:27:39', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
+(102, 1, '0hvihoynttphqbsm4dc6eeys6nbska0d', '2019-04-07 15:40:17', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
+(103, 16, 'tribb3ae0ymbqqcv6o1exxkuw7sqxsyu', '2019-04-07 15:40:28', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
+(104, 1, '3x2jix9qnx7l0f6tgxzfh01zxkrhgh9t', '2019-04-07 15:43:15', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
+(105, 1, 'vbi9o0n9jnkpkagqle9zkyz9ep0j30ab', '2019-04-07 15:53:07', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
+(106, 1, 'wcywlxjehuh4pp0ti8mc5vb0n63mzlcr', '2019-04-07 20:12:26', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
+(107, 1, 'tl338q92vpxi4oy6qdve2yvpfrxqclz1', '2019-04-07 20:58:00', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
+(108, 1, 'bpwl1r3baj74f8158m843iclr3vgenrw', '2019-04-07 20:58:14', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
+(109, 1, 'zafp17jwmu2sxvygkg1ly1c0tth32vfz', '2019-04-08 03:21:16', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
+(110, 1, '87axatce7ufontm19ceqgqoref4z57gz', '2019-04-08 19:17:59', 'feouuh2ksoerd2e0v6pv3ngne1'),
+(111, 1, 'ni7jwxsh2gdmswnu6l00po08j45s77kr', '2019-04-09 02:45:18', 'vuvp89arfqfdbqmplqqko17f1c'),
+(112, 1, 'r96ko9l2h8ul34g2xe5o9kzl9c626tmk', '2019-04-11 02:03:43', 'prt979l7s8q8440c90f2idb0ho'),
+(113, 1, 'nmt9zhom6sraao0v21l9vt9bot52txwf', '2019-04-11 02:09:36', 'prt979l7s8q8440c90f2idb0ho');
 
 -- --------------------------------------------------------
 
@@ -142,6 +200,10 @@ CREATE TABLE `genders` (
   `gender_id` tinyint(1) UNSIGNED NOT NULL,
   `gender_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- ССЫЛКИ ТАБЛИЦЫ `genders`:
+--
 
 -- --------------------------------------------------------
 
@@ -156,6 +218,14 @@ CREATE TABLE `marks` (
   `mark_value` tinyint(1) UNSIGNED NOT NULL,
   `mark_feedback` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- ССЫЛКИ ТАБЛИЦЫ `marks`:
+--   `mark_book_id`
+--       `books` -> `book_id`
+--   `mark_user_id`
+--       `users` -> `user_id`
+--
 
 --
 -- Дамп данных таблицы `marks`
@@ -202,6 +272,14 @@ CREATE TABLE `orders` (
   `order_comment` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- ССЫЛКИ ТАБЛИЦЫ `orders`:
+--   `order_user_id`
+--       `users` -> `user_id`
+--   `order_status_id`
+--       `statuses` -> `status_id`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -212,6 +290,10 @@ CREATE TABLE `publishers` (
   `publisher_id` smallint(5) UNSIGNED NOT NULL,
   `publisher_name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- ССЫЛКИ ТАБЛИЦЫ `publishers`:
+--
 
 --
 -- Дамп данных таблицы `publishers`
@@ -233,6 +315,10 @@ CREATE TABLE `statuses` (
   `status_id` tinyint(1) UNSIGNED NOT NULL,
   `status_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- ССЫЛКИ ТАБЛИЦЫ `statuses`:
+--
 
 --
 -- Дамп данных таблицы `statuses`
@@ -263,12 +349,18 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- ССЫЛКИ ТАБЛИЦЫ `users`:
+--
+
+--
 -- Дамп данных таблицы `users`
 --
 
 INSERT INTO `users` (`user_id`, `user_name`, `user_login`, `user_email`, `user_password`, `user_birthdate`, `user_gender_id`, `user_address`, `user_phone`, `user_is_admin`) VALUES
 (1, NULL, NULL, 'abc@email.com', '123', NULL, NULL, NULL, NULL, NULL),
-(6, NULL, 'gg', 'fggtt@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL);
+(6, NULL, 'gg', 'fggtt@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL),
+(13, NULL, 'gg1', 'fgg1@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL),
+(16, NULL, 'gg2', 'fgg2@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Индексы сохранённых таблиц
@@ -354,13 +446,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `authors`
 --
 ALTER TABLE `authors`
-  MODIFY `author_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `author_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT для таблицы `books`
 --
 ALTER TABLE `books`
-  MODIFY `book_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `book_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `books_authors`
@@ -372,7 +464,7 @@ ALTER TABLE `books_authors`
 -- AUTO_INCREMENT для таблицы `connects`
 --
 ALTER TABLE `connects`
-  MODIFY `connect_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `connect_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 
 --
 -- AUTO_INCREMENT для таблицы `genders`
@@ -384,7 +476,7 @@ ALTER TABLE `genders`
 -- AUTO_INCREMENT для таблицы `marks`
 --
 ALTER TABLE `marks`
-  MODIFY `mark_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `mark_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT для таблицы `orders`
@@ -408,7 +500,7 @@ ALTER TABLE `statuses`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

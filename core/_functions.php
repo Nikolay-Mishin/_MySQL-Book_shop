@@ -81,101 +81,43 @@ function generateToken ($size = 32) {
 function checkIfDefined ($user_id, $book_id) {
     if ($user_id && $book_id) {
         $db = connect();
-        $query = "SELECT * 
-            FROM `marks`
-            WHERE `mark_user_id` = $user_id
-            AND `mark_book_id` = $book_id;
-        ";
-        $result = mysqli_query($db, $query);
-        if (mysqli_num_rows ($result)) return true;
-        else return false;
+        if (query_select ($db, 'marks', '*', ['mark_user_id' => $user_id, 'mark_book_id' => $book_id])) { return true; }
+        else { return false; }
     }
     else return false;
 }
 
 function del ($db, $login) {
-    $user_id = query_select ($db, 'users', 'user_id', ['user_login' => "$login"])['user_id'];
-    query_del ($db, 'connects', ['connect_user_id' => "$user_id"]);
-    query_del ($db, 'users', ['user_login' => "$login"]);
-
-    /* $query = "SELECT `user_id` 
-        FROM `users` 
-        WHERE `user_login` = '$login';
-    ";
-    $result = mysqli_query ($db, $query); 
-    $user_id = mysqli_fetch_assoc ($result)['user_id'];  */
-
-    /* $query = "DELETE FROM `connects` 
-        WHERE `connect_user_id` = '$user_id';
-    ";
-    echo $query.'<br>'; */
-    //$result = mysqli_query ($db, $query);
-
-    
-    /* $query = "DELETE FROM `users` 
-        WHERE `user_login` = '$login';
-    ";
-    echo $query.'<br>'; */
-    //$result = mysqli_query ($db, $query); 
+    $user_id = query_select ($db, 'users', 'user_id', ['user_login' => $login])['user_id'];
+    query_del ($db, 'connects', ['connect_user_id' => $user_id]);
+    query_del ($db, 'users', ['user_login' => $login]);
 }
 
 function validate ($db, $login, $password, $password2, $email, $errors = []) {
     if ($password == '' || $login == '' || $password2 == '') $errors[] = 'Не все данные заполнены';
     if ($password <> $password2) $errors[] = 'Пароли не совпадают';
-    // del ($db, $login);
-    $query = "SELECT `user_id`
-        FROM `users`
-        WHERE `user_login` = '$login';
-    ";
-    $result = mysqli_query ($db, $query);
-    if (mysqli_num_rows ($result)) $errors[] = 'Логин уже занят!';
+    if (query_select ($db, 'users', 'user_id', ['user_login' => $login])) { $errors[] = 'Логин уже занят!'; }
     return $errors;
 }
 
 function reg ($db, $login, $password, $email) {
     $secured_password = md5 ($password);
-
-    $query = "INSERT INTO `users`
-        SET `user_id` = LAST_INSERT_ID(),
-            `user_login` = '$login',
-            `user_password` = '$secured_password',
-            `user_email` = '$email';
-    ";
-    mysqli_query ($db, $query);
-    query_edit ($db, 'users', []);
+    query_add ($db, 'users', ['user_id' => 'LAST_INSERT_ID()', 'user_login' => $login, 'user_password' => $secured_password, 'user_email' => $email]);
 }
 
 function auth ($db, $email, $password) {
-    $secured_password = md5 ($password);
-     
-    $query = "SELECT `user_id`
-        FROM `users`
-        WHERE `user_email` = '$email'
-        AND `user_password` = $secured_password
-    ";
-    $query = "SELECT `user_id`
-        FROM `users`
-        WHERE `user_email` = '$email'
-    ";
-    $result = mysqli_query ($db, $query);
-    if (mysqli_num_rows ($result)) {
-        $user_id = mysqli_fetch_assoc ($result)['user_id'];
+    $email = escape ($email, $db);
+    $password = escape ($password, $db);
+    $secured_password = md5 ($password); 
+    
+    if ($user_id = query_select ($db, 'users', 'user_id', ['user_email' => $email, 'user_password' => $secured_password])) {
+        $user_id = $user_id['user_id'];
         $token = generateToken();
         $token_time = time() + 900;
         $session = $_COOKIE['PHPSESSID'];
         setcookie ('u', $user_id);
         setcookie ('t', $token);
-        $query = "INSERT INTO `connects`
-            SET `connect_user_id` = $user_id,
-                `connect_token` = '$token',
-                `connect_token_time` = FROM_UNIXTIME ($token_time),
-                `connect_session` = '$session';
-        ";
-        /* $query = "INSERT INTO `connects` 
-                    (`connect_user_id`, `connect_token`, `connect_token_time`,        `connect_session`)
-            VALUE   ($user_id,          '$token',        FROM_UNIXTIME ($token_time), '$session');
-        ";  */
-        mysqli_query ($db, $query);
+        query_add ($db, 'connects', ['connect_user_id' => $user_id, 'connect_token' => $token, 'connect_token_time' => "FROM_UNIXTIME ($token_time)", 'connect_session' => $session]);
         $_SESSION['token'] = $token;
         close ($db);
         redirect();
@@ -194,7 +136,10 @@ function query_select ($db, $table, $cols = [], $condition = []) {
     $query = "SELECT `$cols` FROM `$table` $condition;";
     if ($cols === '*') { $query = "SELECT * FROM `$table` $condition"; }
     $result = mysqli_query ($db, $query);
-    return $result->num_rows > 1 ? mysqli_fetch_all ($result, MYSQLI_ASSOC) : mysqli_fetch_assoc ($result);;
+    if (mysqli_num_rows ($result)) {
+        return $result->num_rows > 1 ? mysqli_fetch_all ($result, MYSQLI_ASSOC) : mysqli_fetch_assoc ($result);
+    }
+    else { return false; }
 }
 
 function query_add ($db, $table, $cols = []) {
