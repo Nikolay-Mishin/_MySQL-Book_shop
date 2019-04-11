@@ -4,19 +4,26 @@ define ('BASE_DIR', '/_git/_MySQL/_MySQL-Book_shop/');
 $pattern = strtolower (str_replace ('/', '\/', BASE_DIR));
 define ('DIR', !preg_match ('/admin\//', preg_split ("/$pattern/", strtolower ($_SERVER['REQUEST_URI']))[1]) ? './' : '../');
 
-// Основные директории подключаемых файлов
-define ('A', 'admin/');
-define ('CORE', DIR.'core/');
+// Основные имена директорий подключаемых файлов
+define ('_CLASS', '_classes/'); // core/_classes/
+define ('_A', 'admin/');
+define ('_D', '_data/');
 define ('_R', '_redirect/');
 define ('_COMN', 'common/');
-define ('_C', CORE.'_classes/'); // core/_classes/
-// define ('D', CORE.'_data/'); // core/_data/
-// define ('R', CORE._R); // core/_redirect/
-// define ('C', CORE._COMN); // core/common/
+// Основные имена подключаемых файлов
+define ('_PAGINAT', 'pagination');
+define ('_MARK', 'mark'); // templates/common/
+
+// Основные директории подключаемых файлов
+define ('CORE', DIR.'core/');
+define ('_C', CORE._CLASS); // core/_classes/
+define ('D', CORE._D); // core/_data/
+define ('A', CORE._A); // core/admin/
+define ('C', CORE._COMN); // core/common/
 
 // Внутренние директории подключаемых файлов
-/* define ('DC', D._COMN); // core/_data/common/
-define ('DR', D._R); // core/_data/_redirect/ */
+define ('DA', D._A); // core/_data/admin/
+define ('DC', D._COMN); // core/_data/common/
 
 // Основные директории
 define ('RES', DIR.'resources/');
@@ -39,10 +46,11 @@ define ('HEADER', COMN.'header'); // templates/common/
 define ('FOOT', COMN.'footer'); // templates/common/
 define ('AUTH', COMN.'auth'); // templates/common/
 define ('REG', COMN.'reg'); // templates/common/
-define ('PAGINAT', COMN.'pagination'); // templates/common/
+define ('MARK', COMN._MARK); // templates/common/mark
+define ('PAGINAT', COMN._PAGINAT); // templates/common/pagination
 // Шаблоны Админ страниц
-define ('_AUTHORS', TEMPS.A.'authors/'); // templates/admin/
-define ('_BOOKS', TEMPS.A.'books/'); // templates/admin/
+define ('_AUTHORS', TEMPS._A.'authors/'); // templates/admin/
+define ('_BOOKS', TEMPS._A.'books/'); // templates/admin/
 // Шаблоны страниц
 define ('BOOKS', TEMPS.'books/'); // templates/
 ?>

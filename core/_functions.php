@@ -13,7 +13,7 @@ function escape ($str, $db) {
     return $str;
 }
 
-function load ($page, $title, $args = []) {
+function _load ($page, $title, $args = []) {
     view (HEAD, compact ('title'));
     if (!is_array ($page)) { view ($page, $args); } // main
     else { foreach ($page as $key => $item) { view ($item, $args[$key]); } }
@@ -22,10 +22,48 @@ function load ($page, $title, $args = []) {
     return $args;
 }
 
+function load ($data, $page, $args = []) {
+    if (!is_array ($page)) {
+        $data = load_data ($data, $args);
+        $title = $data['title'] ?? '';
+        require_once C.'head.php'; // head
+        $data = load_content ($data, $page, $args);
+    }
+    else {
+        $datas = [];
+        foreach ($page as $key => $item) {
+            $datas[$key] = isset ($data[$key]) ? load_data ($data[$key], $args[$key]) : load_data ($data[array_key_last ($data)], $args[$key]);
+        }
+        // test ($datas);
+        $title = $datas[0]['title'] ?? '';
+        require_once C.'head.php'; // head
+        foreach ($datas as $key => $item) { load_content ($item, $page[$key], $args[$key]); }
+    }
+    require_once C.'footer.php'; // footer
+    return $data;
+}
+
+function load_data ($data, $args) {
+    // if (info ($data)['filename'] == '_redirect') $data .= 'main';
+    require "$data.php"; // Data
+    if (isset ($title)) { $args[] = 'title'; }
+    // test ($args);
+    $data = compact ($args);
+    return $data;
+}
+
+function load_content ($data, $page, $args) {
+    view ($page, $data); // main
+    // if (key_exists ('redirect', $data)) redirect ($data['redirect']);
+    return $data;
+}
+
 function view ($file, $data = []) {
-    extract ($data);
+    if (!empty ($data)) extract ($data);
+    // if (is_dir ($file) && (info ($file)['dirname'] == 'templates' || info ($file)['dirname'] == '.')) $file .= 'main';
     $file .= '.html';
     if (file_exists ($file)) require_once $file;
+    return $data;
 }
 
 function checkUserIsAuthorized () {
@@ -108,7 +146,7 @@ function reg ($db, $login, $password, $email) {
 function auth ($db, $email, $password) {
     $email = escape ($email, $db);
     $password = escape ($password, $db);
-    $secured_password = md5 ($password); 
+    $secured_password = md5 ($password);
     
     if ($user_id = query_select ($db, 'users', 'user_id', ['user_email' => $email, 'user_password' => $secured_password])) {
         $user_id = $user_id['user_id'];
@@ -131,15 +169,43 @@ function logout () {
     redirect();
 }
 
-function query_select ($db, $table, $cols = [], $condition = []) {
-    $condition = !empty ($condition) ? 'WHERE ' . query_from_array ($condition) : '';
-    $query = "SELECT `$cols` FROM `$table` $condition;";
-    if ($cols === '*') { $query = "SELECT * FROM `$table` $condition"; }
+function query_select ($db, $table, $cols, $condition = null, $filter = null, $offset = null, $count = 1, $join = null, $group_by = null) {
+    $cols = !is_array ($cols) && !preg_match ('/\*/', $cols) ? "`$cols`" : $cols;
+    $cols = !is_array ($cols) ? $cols : query_from_array ($cols, 'cols');
+    
+    if (!empty ($condition) && !empty ($filter)) {
+        $condition = 'WHERE ' . query_from_array ($condition) . ' AND ' . query_from_array ($filter, 'LIKE');
+    }
+    else if ($condition) { $condition = 'WHERE ' . query_from_array ($condition); }
+    else if ($filter) { $condition = 'WHERE ' . query_from_array ($filter, 'LIKE'); }
+    else { $condition = ''; }
+
+    $limit = $offset !== null && $count ? "LIMIT $offset, $count" : '';
+
+    $join = $join ?? '';
+    $join = !is_array ($join) ? $join : query_from_array ($join, 'JOIN');
+
+    $group_by = $group_by ? "GROUP BY `$group_by`" : '';
+
+    $query = "SELECT $cols FROM `$table` $join $condition $group_by $limit;";
+    if ($cols === '*') { $query = "SELECT * FROM `$table` $condition $limit $group_by;"; }
+    echo $query.'<br>';
+
     $result = mysqli_query ($db, $query);
     if (mysqli_num_rows ($result)) {
         return $result->num_rows > 1 ? mysqli_fetch_all ($result, MYSQLI_ASSOC) : mysqli_fetch_assoc ($result);
     }
     else { return false; }
+}
+
+function query_found_rows ($db, $table, $condition = [], $filter = [], $offset, $count) {
+    return query_select ($db, $table, 'SQL_CALC_FOUND_ROWS *', $condition, $filter, $offset, $count);
+}
+
+function query_get_rows ($db, $count) {
+    $result = mysqli_query ($db, "SELECT FOUND_ROWS()");
+    $num_rows = mysqli_fetch_row ($result)[0];
+    return ceil ($num_rows / $count);
 }
 
 function query_add ($db, $table, $cols = []) {
@@ -162,38 +228,39 @@ function query_del ($db, $table, $condition = []) {
     mysqli_query ($db, $query);
 }
 
-function query_found_rows ($db, $offset, $count, $table, $condition = [], $filter = []) {
-    if (!empty ($condition) && !empty ($filter)) {
-        $condition = 'WHERE ' . query_from_array ($condition) . ' AND ' . query_from_array ($filter, 'LIKE');
-    }
-    else if (!empty ($condition)) { $condition = 'WHERE ' . query_from_array ($condition); }
-    else if (!empty ($filter)) { $condition = 'WHERE ' . query_from_array ($filter, 'LIKE'); }
-    else { $condition = ''; }
-    $query = "SELECT SQL_CALC_FOUND_ROWS * FROM `$table` $condition LIMIT $offset, $count";
-    echo $query.'<br>';
-    $result = mysqli_query ($db, $query);
-    return mysqli_fetch_all ($result, MYSQLI_ASSOC);
-}
-
-function query_get_rows ($db, $count) {
-    $result = mysqli_query ($db, "SELECT FOUND_ROWS()");
-    $num_rows = mysqli_fetch_row ($result)[0];
-    return ceil ($num_rows / $count);
-}
-
 function query_from_array ($arr, $s = '=') {
     $query = '';
-    $d = 'AND';
+    $d = ' AND ';
     foreach ($arr as $key => $val) {
         if ($s === 'SET') {
-            $s = '=';
+            $s = ' =';
             $d = ', ';
         }
-        $val = (int) $val ?: $val;
+        if (!is_array ($val)) $val = (int) $val ?: $val;
         if ($s === 'LIKE') { $val = "%$val%"; }
-        if (gettype ($val) == 'string') { $val = "'$val'"; }
-        $query .= "`$key` $s $val";
-        if ($key !== array_key_last ($arr)) { $query .= " $d "; }
+        if ($s === 'cols') {
+            $d = ', ';
+            if (preg_match ('/AS/', $val)) {
+                $val = preg_split ('/\sAS\s/', $val);
+                preg_match ('/GROUP_CONCAT\((.+)\)/', $val[0], $preg);
+                $val1 = !$preg ? $val[0] : $preg[1];
+                $val1 = !$preg ? "`$val1`" : "GROUP_CONCAT(`$val1`)";
+                $val2 = $val[1];
+                $query .= $val1 . ' AS ' . "`$val2`";
+            }
+            else { $query .= "`$val`"; }
+        }
+        else if ($s === 'JOIN') {
+            $val1 = $val[0];
+            $val2 = $val[1];
+            $query .= "LEFT JOIN `$key` ON `$val1` = `$val2`";
+            $d = ' ';
+        }
+        else {
+            if (gettype ($val) == 'string') { $val = "'$val'"; }
+            $query .= "`$key` $s $val";
+        }
+        if ($key !== array_key_last ($arr)) { $query .= "$d"; }
     }
     return $query;
 }
