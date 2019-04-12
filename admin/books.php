@@ -1,11 +1,9 @@
 <?php
 require_once '../core/main.php';
 // session_start();
-// if (checkUserIsAuthorized()) { session_start(); }
-/* test ($_SESSION);
-test ($_COOKIE); */
-Router::_()->url_is_locked();
-Router::_()->user_is_authorized();
+Router::_()->test();
+$obj = Router::_();
+$obj->url_locked (true, true, true);
 
 $data = [DA.name()];
 $pages = [_BOOKS.name(), PAGINAT];

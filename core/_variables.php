@@ -1,8 +1,18 @@
 <?php
 define ('BASE_DIR', '/_git/_MySQL/_MySQL-Book_shop/');
 
-$pattern = strtolower (str_replace ('/', '\/', BASE_DIR));
-define ('DIR', !preg_match ('/admin\//', preg_split ("/$pattern/", strtolower ($_SERVER['REQUEST_URI']))[1]) ? './' : '../');
+function url_parse ($url) {
+    $pattern = strtolower (str_replace ('/', '\/', BASE_DIR));
+    return preg_split ("/$pattern/", strtolower ($url))[1];
+}
+
+function url_admin_parse ($url) {
+    return preg_match ('/admin\//', url_parse ($url));
+}
+
+define ('DIR', !url_admin_parse ($_SERVER['REQUEST_URI']) ? './' : '../');
+define ('INDEX', DIR.'books.php');
+define ('DIR_AUTH', './auth.php');
 
 // Основные имена директорий подключаемых файлов
 define ('_CLASS', '_classes/');

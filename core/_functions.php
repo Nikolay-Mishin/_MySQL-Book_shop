@@ -102,7 +102,7 @@ function auth ($db, $email, $password) {
         query_add ($db, 'connects', ['connect_user_id' => $user_id, 'connect_token' => $token, 'connect_token_time' => "FROM_UNIXTIME ($token_time)", 'connect_session' => $session]);
         close ($db);
         $_SESSION['token'] = $token;
-        redirect();
+        redirect(3);
     } 
     else echo '<p> Неверная связка логин / пароль </p>';
 }
@@ -289,11 +289,7 @@ function query_preg ($val) {
     return $val;
 }
 
-function redirect ($t = 0, $url = null) {
-    if (!$url) { $url = redirect_page(); }
-    else { $url = $_COOKIE['r']; }
-    Controller::_()->redirect_call ($t, $url);
-}
+function redirect ($t = 0, $url = null) { Controller::_()->redirect_call ($t, $url); }
 
 function set_redirect () { if (empty ($_POST)) { setcookie ('r', redirect_page()); } }
 
