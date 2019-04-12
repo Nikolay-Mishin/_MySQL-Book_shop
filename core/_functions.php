@@ -66,56 +66,6 @@ function view ($file, $data = []) {
     return $data;
 }
 
-function checkUserIsAuthorized () {
-    $authorized = false;
-
-    if (isset ($_COOKIE['u']) && isset ($_COOKIE['t']) && isset ($_COOKIE['PHPSESSID'])) {
-        $user = $_COOKIE['u'];
-        $token = $_COOKIE['t'];
-        $session = $_COOKIE['PHPSESSID'];
-
-        $db = connect();
-        $query = "SELECT
-                `connect_id`, `connect_user_id`, `connect_token`, `connect_session`,
-                UNIX_TIMESTAMP (`connect_token_time`) AS `time`
-            FROM `connects`
-            WHERE `connect_user_id` = $user
-            AND `connect_token` = '$token'
-            AND `connect_session` = '$session'
-        ";
-        $result = mysqli_query ($db, $query);
-
-        if (mysqli_num_rows ($result)) {
-            $connect_info = mysqli_fetch_assoc ($result);
-            $expiration_time = $connect_info['time'];
-
-            if ($expiration_time < time()) {
-                $token = generateToken();
-                $token_time = time() + 900;
-                $connect_id = $connect_info['connect_id'];
-                $query = "UPDATE `connects`
-                    SET `connect_token` = '$token',
-                        `connect_token_time` = FROM_UNIXTIME ($token_time)
-                    WHERE `connect_id` = $connect_id;
-                ";
-
-                mysqli_query ($db, $query);
-                setcookie ('t', $token);
-            }
-            $authorized = true;
-        }
-    }
-    return $authorized;
-}
-
-function generateToken ($size = 32) {
-    $symbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    $token = "";
-    $length = count ($symbols) - 1;
-    for ($i = 0; $i < $size; $i++) $token .= $symbols[rand (0, $length)];
-    return $token;
-}
-
 function checkIfDefined ($user_id, $book_id) {
     if ($user_id && $book_id) {
         $db = connect();
@@ -123,12 +73,6 @@ function checkIfDefined ($user_id, $book_id) {
         else { return false; }
     }
     else return false;
-}
-
-function del ($db, $login) {
-    $user_id = query_select ($db, 'users', 'user_id', ['user_login' => $login])['user_id'];
-    query_del ($db, 'connects', ['connect_user_id' => $user_id]);
-    query_del ($db, 'users', ['user_login' => $login]);
 }
 
 function validate ($db, $login, $password, $password2, $email, $errors = []) {
@@ -156,24 +100,82 @@ function auth ($db, $email, $password) {
         setcookie ('u', $user_id);
         setcookie ('t', $token);
         query_add ($db, 'connects', ['connect_user_id' => $user_id, 'connect_token' => $token, 'connect_token_time' => "FROM_UNIXTIME ($token_time)", 'connect_session' => $session]);
-        $_SESSION['token'] = $token;
         close ($db);
+        $_SESSION['token'] = $token;
         redirect();
     } 
     else echo '<p> Неверная связка логин / пароль </p>';
 }
 
-function logout () {
+function generateToken ($size = 32) {
+    $symbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    $token = "";
+    $length = count ($symbols) - 1;
+    for ($i = 0; $i < $size; $i++) $token .= $symbols[rand (0, $length)];
+    return $token;
+}
+
+function logout ($db) {
     session_unset();
-    setcookie ('u', $_COOKIE['u'], time() - 100);
+    // Удаляем все переменные сессии.
+    $_SESSION = array();
+    // Если требуется уничтожить сессию, также необходимо удалить сессионные cookie.
+    // Замечание: Это уничтожит сессию, а не только данные сессии!
+    if (ini_get ("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie (session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
+    // Наконец, уничтожаем сессию.
+    // session_destroy();
+
+    query_del ($db, 'connects', ['connect_user_id' => $_COOKIE['u']]);
+    setcookie ('u', $_COOKIE['u'], time() - 42000);
+    setcookie ('t', $_COOKIE['t'], time() - 42000);
+    setcookie ('PHPSESSID', $_COOKIE['PHPSESSID'], time() - 42000);
     redirect();
 }
 
-function query_select ($db, $table, $cols, $condition = null, $filter = null, $offset = null, $count = 1, $join = null, $group_by = null) {
-    $cols = !is_array ($cols) && !preg_match ('/\*/', $cols) ? "`$cols`" : $cols;
-    $cols = !is_array ($cols) ? $cols : query_from_array ($cols, 'cols');
+function checkUserIsAuthorized () {
+    $authorized = false;
+
+    if (isset ($_COOKIE['u']) && isset ($_COOKIE['t']) && isset ($_COOKIE['PHPSESSID'])) {
+        $user = $_COOKIE['u'];
+        $token = $_COOKIE['t'];
+        $session = $_COOKIE['PHPSESSID'];
+
+        $db = connect();
+        $result = query_select ($db, 'connects',
+            ['connect_id', 'connect_user_id', 'connect_token', 'connect_session', 'UNIX_TIMESTAMP(connect_token_time) AS time'], 
+            ['connect_user_id' => $user, 'connect_token' => $token, 'connect_session' => $session]
+        );
+
+        if ($connect_info = $result) {
+            $expiration_time = $connect_info['time'];
+
+            if ($expiration_time < time()) {
+                $token = generateToken();
+                $token_time = time() + 900;
+                $connect_id = $connect_info['connect_id'];
+                query_edit ($db, 'connects',
+                    ['connect_token' => $token, 'connect_token_time' => "FROM_UNIXTIME($token_time)"],
+                    ['connect_id' => $connect_id]
+                );
+                mysqli_query ($db, $query);
+                setcookie ('t', $token);
+            }
+            $authorized = true;
+        }
+    }
+    return $authorized;
+}
+
+function query_build ($db, $table, $cols = '*', $join = null, $condition = null, $filter = null, $group_by = null, $offset = null, $count = 1) {
+    $cols = !is_array ($cols) ? preg_match ('/\*/', $cols) ? $cols : "`$cols`" : query_from_array ($cols, 'cols');
     
-    if (!empty ($condition) && !empty ($filter)) {
+    if ($condition && $filter) {
         $condition = 'WHERE ' . query_from_array ($condition) . ' AND ' . query_from_array ($filter, 'LIKE');
     }
     else if ($condition) { $condition = 'WHERE ' . query_from_array ($condition); }
@@ -189,7 +191,7 @@ function query_select ($db, $table, $cols, $condition = null, $filter = null, $o
 
     $query = "SELECT $cols FROM `$table` $join $condition $group_by $limit;";
     if ($cols === '*') { $query = "SELECT * FROM `$table` $join $condition $group_by $limit;"; }
-    echo $query.'<br>';
+    // echo $query.'<br>';
 
     $result = mysqli_query ($db, $query);
     if (mysqli_num_rows ($result)) {
@@ -199,8 +201,12 @@ function query_select ($db, $table, $cols, $condition = null, $filter = null, $o
     else { return false; }
 }
 
-function query_found_rows ($db, $table, $condition = [], $filter = [], $offset, $count) {
-    return query_select ($db, $table, 'SQL_CALC_FOUND_ROWS *', $condition, $filter, $offset, $count);
+function query_select ($db, $table, $cols = '*', $condition = null) {
+    return query_build ($db, $table, $cols, null, $condition);
+}
+
+function query_found_rows ($db, $table, $condition = null, $filter = null, $offset, $count = 1) {
+    return query_build ($db, $table, 'SQL_CALC_FOUND_ROWS *', null, $condition, $filter, null, $offset, $count);
 }
 
 function query_get_rows ($db, $count) {
@@ -209,23 +215,29 @@ function query_get_rows ($db, $count) {
     return ceil ($num_rows / $count);
 }
 
-function query_add ($db, $table, $cols = []) {
-    $cols = query_from_array ($cols, 'SET');
+function query_join ($db, $table, $cols = '*', $join = null, $condition = null, $filter = null, $group_by = null, $offset = null, $count = 1) {
+    return query_build ($db, $table, $cols, $join, $condition, $filter, $group_by, $offset, $count);
+}
+
+function query_add ($db, $table, $cols) {
+    $cols = !is_array ($cols) ? "`$cols`" : query_from_array ($cols, 'SET');
     $query = "INSERT INTO `$table` SET $cols";
+    // echo $query.'<br>';
     mysqli_query ($db, $query);
 }
 
-function query_edit ($db, $table, $cols = [], $condition = []) {
-    $cols = query_from_array ($cols, 'SET');
-    $condition = !empty ($condition) ? 'WHERE ' . query_from_array ($condition) : '';
+function query_edit ($db, $table, $cols, $condition = null) {
+    $cols = !is_array ($cols) ? "`$cols`" : query_from_array ($cols, 'SET');
+    $condition =  $condition ? 'WHERE ' . query_from_array ($condition) : '';
     $query = "UPDATE `$table` SET $cols $condition";
-    echo $query.'<br>';
+    // echo $query.'<br>';
     mysqli_query ($db, $query);
 }
 
-function query_del ($db, $table, $condition = []) {
-    $condition = !empty ($condition) ? 'WHERE ' . query_from_array ($condition) : '';
+function query_del ($db, $table, $condition = null) {
+    $condition = $condition ? 'WHERE ' . query_from_array ($condition) : '';
     $query = "DELETE FROM `$table` $condition";
+    // echo $auery.'<br>';
     mysqli_query ($db, $query);
 }
 
@@ -233,24 +245,11 @@ function query_from_array ($arr, $s = '=') {
     $query = '';
     $d = ' AND ';
     foreach ($arr as $key => $val) {
-        if ($s === 'SET') {
-            $s = ' =';
-            $d = ', ';
-        }
-        if (!is_array ($val)) $val = (int) $val ?: $val;
+        if ($s === 'SET') { $s = '='; $d = ', '; }
+        if (!is_array ($val)) { $val = (int) $val ?: $val; }
         if ($s === 'LIKE') { $val = "%$val%"; }
-        if ($s === 'cols') {
-            $d = ', ';
-            if (preg_match ('/AS/', $val)) {
-                $val = preg_split ('/\sAS\s/', $val);
-                preg_match ('/GROUP_CONCAT\((.+)\)/', $val[0], $preg);
-                $val1 = !$preg ? $val[0] : $preg[1];
-                $val1 = !$preg ? "`$val1`" : "GROUP_CONCAT(`$val1`)";
-                $val2 = $val[1];
-                $query .= $val1 . ' AS ' . "`$val2`";
-            }
-            else { $query .= "`$val`"; }
-        }
+
+        if ($s === 'cols') { $query .= query_parse ($val, $s); $d = ', '; }
         else if ($s === 'JOIN') {
             $val1 = $val[0];
             $val2 = $val[1];
@@ -258,12 +257,36 @@ function query_from_array ($arr, $s = '=') {
             $d = ' ';
         }
         else {
-            if (gettype ($val) == 'string') { $val = "'$val'"; }
+            $val = query_parse ($val, $s);
+            if (gettype ($val) == 'string' && !preg_match ('/(.*)\((.+)\)/', $val)) { $val = "'$val'"; }
             $query .= "`$key` $s $val";
         }
+
         if ($key !== array_key_last ($arr)) { $query .= "$d"; }
     }
+    // echo $query . '<br>';
     return $query;
+}
+
+function query_parse ($val, $s = null) {
+    if (preg_match ('/AS/', $val)) {
+        $val = preg_split ('/\sAS\s/', $val);
+        $val1 = query_preg ($val[0]);
+        $val2 = $val[1];
+        $val = $val1 . ' AS ' . "`$val2`";
+    }
+    else if (preg_match ('/(.*)\((.+)\)/', $val, $preg)) { $val = query_preg ($val); }
+    else { $val = $s === '=' || $s === 'LIKE' || $s !== 'cols' ? $val : "`$val`"; }
+    return $val;
+}
+
+function query_preg ($val) {
+    preg_match ('/(.*)\((.+)\)/', $val, $preg);
+    $val0 = !$preg ?: $preg[1];
+    $val = !$preg ? $val : $preg[2];
+    $val = (int) $val ? $val : "`$val`";
+    $val = !$preg ? $val : "$val0($val)";
+    return $val;
 }
 
 function redirect ($t = 0, $url = null) {

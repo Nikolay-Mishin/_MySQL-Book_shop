@@ -5,7 +5,7 @@ $pattern = strtolower (str_replace ('/', '\/', BASE_DIR));
 define ('DIR', !preg_match ('/admin\//', preg_split ("/$pattern/", strtolower ($_SERVER['REQUEST_URI']))[1]) ? './' : '../');
 
 // Основные имена директорий подключаемых файлов
-define ('_CLASS', '_classes/'); // core/_classes/
+define ('_CLASS', '_classes/');
 define ('_A', 'admin/');
 define ('_D', '_data/');
 define ('_R', '_redirect/');
