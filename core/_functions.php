@@ -172,7 +172,7 @@ function checkUserIsAuthorized () {
     return $authorized;
 }
 
-function query_build ($db, $table, $cols = '*', $join = null, $condition = null, $filter = null, $group_by = null, $offset = null, $count = 1) {
+function query_build ($db, $table, $cols = '*', $join = null, $condition = null, $filter = null, $group_by = null, $offset = null, $count = null) {
     $cols = !is_array ($cols) ? preg_match ('/\*/', $cols) ? $cols : "`$cols`" : query_from_array ($cols, 'cols');
     
     if ($condition && $filter) {
@@ -201,6 +201,10 @@ function query_build ($db, $table, $cols = '*', $join = null, $condition = null,
     else { return false; }
 }
 
+function query_join ($db, $table, $cols = '*', $join = null, $condition = null, $filter = null, $group_by = null, $offset = null, $count = null) {
+    return query_build ($db, $table, $cols, $join, $condition, $filter, $group_by, $offset, $count);
+}
+
 function query_select ($db, $table, $cols = '*', $condition = null) {
     return query_build ($db, $table, $cols, null, $condition);
 }
@@ -213,10 +217,6 @@ function query_get_rows ($db, $count) {
     $result = mysqli_query ($db, "SELECT FOUND_ROWS()");
     $num_rows = mysqli_fetch_row ($result)[0];
     return ceil ($num_rows / $count);
-}
-
-function query_join ($db, $table, $cols = '*', $join = null, $condition = null, $filter = null, $group_by = null, $offset = null, $count = 1) {
-    return query_build ($db, $table, $cols, $join, $condition, $filter, $group_by, $offset, $count);
 }
 
 function query_add ($db, $table, $cols) {

@@ -8,7 +8,10 @@ $offset = $count * ($page - 1);
 
 $db = connect(); 
 $books = query_join ($db, 'books', 
-    ['book_id AS id', 'book_name', 'book_price', 'publisher_name', 'book_quantity', 'GROUP_CONCAT(author_name) AS author'], 
+    [
+        'book_id AS id', 'book_name', 'book_price', 'publisher_name', 'book_quantity',
+        'GROUP_CONCAT(author_name) AS author'
+    ], 
     [
         'publishers' => ['book_publisher_id', 'publisher_id'],
         'books_authors' => ['book_author_book_id', 'book_id'],

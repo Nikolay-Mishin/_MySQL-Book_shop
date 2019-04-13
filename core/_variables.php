@@ -12,7 +12,7 @@ function url_admin_parse ($url) {
 
 define ('DIR', !url_admin_parse ($_SERVER['REQUEST_URI']) ? './' : '../');
 define ('INDEX', DIR.'books.php');
-define ('DIR_AUTH', './auth.php');
+define ('DIR_AUTH', DIR.'auth.php');
 
 // Основные имена директорий подключаемых файлов
 define ('_CLASS', '_classes/');
