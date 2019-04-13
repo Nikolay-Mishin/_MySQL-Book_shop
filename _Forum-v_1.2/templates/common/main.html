@@ -1,0 +1,107 @@
+
+<!-------------------------------- MAIN FORUM -------------------------------->
+<main role="main" class="container">
+<? foreach ($result as $results): ?>
+ <? if ($results['title']['section_tag_sections_id'] == '1') {
+    $color = '#6f42c1'; 
+    $color_bg = 'bg-purple'; 
+} elseif ($results['title']['section_tag_sections_id'] =='2') {
+   $color = '#007bff'; 
+   $color_bg = 'bg-primary'; 
+} elseif ($results['title']['section_tag_sections_id'] =='3') {
+   $color = '#28a745'; 
+   $color_bg = 'bg-success'; 
+} elseif ($results['title']['section_tag_sections_id'] =='4') {
+   $color = '#ffc107'; 
+   $color_bg = 'bg-warning'; 
+} elseif ($results['title']['section_tag_sections_id'] =='5') {
+   $color = '#17a2b8'; 
+   $color_bg = 'bg-info'; 
+} elseif ($results['title']['section_tag_sections_id'] =='6') {
+   $color = '#dc3545'; 
+   $color_bg = 'bg-danger'; 
+} ?>
+<div class="d-flex align-items-center p-3 my-3 text-white-50 <?= $color_bg; ?> rounded shadow-sm">
+    <img class="mr-3" src="img/logo/logotip-m-800x800.jpg" alt="" width="48" height="48">
+    <div class="lh-100">
+        <h6 class="mb-0 text-white lh-100"><?= $results['title']['section_name']; ?></h6>
+        <small class="mr-3">Тем: <?= count($results['themes']); ?></small>
+        <? 
+            $msg = 0; 
+            foreach ($results['themes'] as $item) {
+                $msg += $item['topic_message'];
+            } 
+        ?>
+        <small>Сообщений: <?= $msg; ?></small>
+    </div>
+  </div>
+
+
+  <div class="my-3 p-3 bg-white rounded shadow-sm">
+<!-------- CARD TOP btn -------->
+    <div class="d-flex align-items-end border-bottom border-gray pb-2 mb-0">
+    <div class="p-1"><h6 class="mb-0">Темы:</h6></div>
+        <div class="ml-auto p-1">
+            <?= $btn_add;?>
+        </div>
+    </div>
+    
+<!------- /. CARD TOP btn ------->
+   <? foreach ($results['themes'] as $results2): ?>
+    <div class="d-flex align-items-center border-bottom border-gray pb-2 mb-0">
+    <div class="p-1">
+        <div class="media text-muted pt-3">
+            <svg class="bd-placeholder-img mr-2 rounded" width="15" height="15" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="<?= $color; ?>"></rect><text x="50%" y="50%" fill="<?= $color; ?>" dy=".3em">32x32</text></svg>
+            <p class="media-body pb-3 mb-0 small lh-125">
+            <strong class="d-block text-gray-dark pb-2"><a href=""><?= $results2['topic_title']; ?></a></strong><?= $results2['topic_description']; ?>
+            <small class="d-block pt-2">
+                <i class="far fa-comment-alt"><span class="px-2"><?= $results2['topic_message']; ?></span></i>
+                <i class="far fa-calendar-alt"><span class="px-2"><?= $results2['topic_date']; ?></span></i>
+            </small>
+        </p>
+        </div>
+    </div>
+        <div class="ml-auto p-1">
+           <?= $btn_edit; ?>
+           <?= $btn_delet; ?>
+        </div>
+    </div>
+   <? endforeach; ?>
+    <small class="d-block text-right mt-3">
+      <a href="<?= $results['title']['section_url']; ?>">подробнее -></a>
+    </small>
+  </div>
+<? endforeach; ?>
+
+<!-------------------------------------- Статистика ----------------------------->
+  <div class="my-3 p-3 bg-white rounded shadow">
+    <h6 class="border-bottom border-gray pb-2 mb-0"><i class="far fa-chart-bar"></i> Статистика</h6>
+    <div class="media text-muted pt-3">
+      <i class="fas fa-swatchbook bd-placeholder-img p-2"></i>
+      <div class="media-body pb-3 mb-0 small lh-125">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <strong class="text-gray-dark">Тем</strong>
+        </div>
+        <span class="d-block">2,000</span>
+      </div>
+
+      <i class="far fa-comment-alt bd-placeholder-img p-2"></i>
+      <div class="media-body pb-3 mb-0 small lh-125">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <strong class="text-gray-dark">Сообщений</strong>
+        </div>
+        <span class="d-block">1,200</span>
+      </div>
+
+      <i class="fas fa-users bd-placeholder-img p-2"></i>
+      <div class="media-body pb-3 mb-0 small lh-125">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <strong class="text-gray-dark">Пользователи</strong>
+        </div>
+        <span class="d-block">1,100,000</span>
+      </div>
+    </div>
+  </div>
+<!------------------------------------/. Статистика ----------------------------->
+</main>
+<!------------------------------- /. MAIN FORUM-->

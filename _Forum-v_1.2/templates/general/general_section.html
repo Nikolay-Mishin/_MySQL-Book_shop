@@ -1,0 +1,39 @@
+<!-------------------------------- MAIN POST -------------------------------->
+<main role="main" class="container">
+<!-------------  SECTION HEADER ------------->
+    <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-primary rounded shadow-sm">
+        <img class="mr-3" src="../img/logo/logotip-m-800x800.jpg" alt="" width="48" height="48">
+        <div class="lh-100">
+        <h6 class="mb-0 text-white lh-100">Форум / <?= $section_name; ?></h6>
+        <small class="mr-3">Комментариев: <?= $msg; ?></small><small class="mr-3">Просмотров: <?= $view; ?></small><small>Тем: <?= $themes_len; ?></small>
+        </div>
+    </div>
+<!------------- /. SECTION HEADER ------------->
+<!-------------------- CARD 1 --------------->
+<? foreach ($result as $results): ?>
+<? foreach ($results['themes'] as $results2): ?>
+    <?if ($results2['topic_tag_id'] == '1') {
+        $color = 'card-item-yellow'; 
+    } elseif ($results2['topic_tag_id'] =='2') {
+        $color = 'card-item-blue';  
+    } ?>
+    <div class="my-3 p-3 bg-white rounded shadow card-item <?= $color; ?>">
+        <h5 class="border-bottom border-gray pb-2 mb-0"><i class="far fa-comment-alt bd-placeholder-img p-2 small"></i><a href="<?= $results2['topic_url']; ?>"><?= $results2['topic_title']; ?></a></h5>
+<!-------- CARD BOTTOM  -------->
+    <div class="d-flex">
+    <div class="text-muted p-1 small">Автор: <a class="px-1" href="#"><?= $results2['topic_publication_user_id']; ?></a></i></div>
+    <div class="text-muted p-1 small"><i class="far fa-calendar-alt"> <?= $results2['topic_date']; ?></i></div>
+    <div class="text-muted p-1 small">Комментариев: <?= $results2['topic_message']; ?></i></div>
+    <div class="text-muted p-1 small"><i class="far fa-eye"> <?= $results2['topic_view']; ?></i></div>
+            <div class="ml-auto p-1">
+                <?= $btn_edit; ?>
+                <?= $btn_delet; ?>
+            </div>
+    </div>
+<!------- /. CARD BOTTOM  ------->
+    </div>
+<!--------------- /. CARD 1 -------------->
+<? endforeach; ?>
+<? endforeach; ?>
+</main>
+<!------------------------------- /. MAIN POST-->

@@ -1,0 +1,20 @@
+
+<!----------------------------------------- FOOTER ------------------------------------>
+<footer class="text-muted bg-dark">
+  <div class="container p-4 mt-5">
+    <p class="float-right">
+      <a href="#">Back to top</a>
+    </p>
+    <p class="text-center">Company Games. Все права защищены.</p>
+    <p>© 2019</p>
+  </div>
+</footer>
+<!-----------------------------------------/. FOOTER ------------------------------------>
+
+<? $prefix = ''; if (preg_match('/php/', pathinfo($_SERVER['PHP_SELF'])['dirname'])) $prefix = '../'; ?>
+<? foreach ($js as $file): ?>
+<script src="./<?= $prefix.$file ?>"></script>
+<? endforeach; ?>
+
+</body>
+</html>
