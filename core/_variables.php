@@ -1,21 +1,6 @@
 <?php
-define ('BASE_DIR', '/_git/_MySQL/_MySQL-Book_shop/');
-
-function url_parse ($url) {
-    $pattern = strtolower (str_replace ('/', '\/', BASE_DIR));
-    return preg_split ("/$pattern/", strtolower ($url))[1];
-}
-
-function url_admin_parse ($url) {
-    return preg_match ('/admin\//', url_parse ($url));
-}
-
-define ('DIR', !url_admin_parse ($_SERVER['REQUEST_URI']) ? './' : '../');
-define ('INDEX', DIR.'books.php');
-define ('DIR_AUTH', /* DIR. */'./auth.php');
-
 // Основные имена директорий подключаемых файлов
-define ('_CLASS', '_classes/');
+// _CLASSES
 define ('_A', 'admin/');
 define ('_D', '_data/');
 define ('_R', '_redirect/');
@@ -25,8 +10,8 @@ define ('_PAGINAT', 'pagination');
 define ('_MARK', 'mark'); // templates/common/
 
 // Основные директории подключаемых файлов
-define ('CORE', DIR.'core/');
-define ('_C', CORE._CLASS); // core/_classes/
+// CORE
+// // core/_classes/
 define ('D', CORE._D); // core/_data/
 define ('A', CORE._A); // core/admin/
 define ('C', CORE._COMN); // core/common/

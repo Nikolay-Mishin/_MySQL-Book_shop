@@ -1,11 +1,6 @@
 <?php
 spl_autoload_register ('autoload');
 
-function _autoload ($class) {
-    $class = _C."$class.php";
-    require_once $class;
-}
-
 function autoload ($class) {
     $base_dir = preg_replace ('/\/$/', '', _C);
     $dirs = List_folder_dirs::_()->get_dirs ($base_dir);
@@ -31,11 +26,8 @@ Class List_folder_dirs {
 
         unset ($ffs[array_search ('.', $ffs, true)]);
         unset ($ffs[array_search ('..', $ffs, true)]);
-
-        // prevent empty ordered elements
-        if (count ($ffs) < 1) {
-            return;
-        }
+        
+        if (count ($ffs) < 1) { return; } // prevent empty ordered elements
 
         foreach ($ffs as $ff) {
             if (is_dir ("$dir/$ff")) {

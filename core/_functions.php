@@ -82,12 +82,16 @@ function reg ($db, $login, $password, $email) {
 }
 
 function auth ($db, $email, $password) {
+    Router::_()->test();
     $email = escape ($email, $db);
     $password = escape ($password, $db);
     $secured_password = md5 ($password);
     
     if ($user_id = query_select ($db, 'users', 'user_id', ['user_email' => $email, 'user_password' => $secured_password])) {
         $user_id = $user_id['user_id'];
+        test ("user_id => $user_id");
+        /* $obj = Router::_();
+        $obj->url_locked (true, true, true); */
         $token = generateToken();
         $token_time = time() + 900;
         $session = $_COOKIE['PHPSESSID'];
@@ -96,7 +100,7 @@ function auth ($db, $email, $password) {
         query_add ($db, 'connects', ['connect_user_id' => $user_id, 'connect_token' => $token, 'connect_token_time' => "FROM_UNIXTIME ($token_time)", 'connect_session' => $session]);
         close ($db);
         $_SESSION['token'] = $token;
-        redirect(3);
+        redirect();
     } 
     else echo '<p> Неверная связка логин / пароль </p>';
 }
@@ -283,7 +287,7 @@ function query_preg ($val) {
     return $val;
 }
 
-function redirect ($t = 0, $url = null) { Controller::_()->redirect_call ($t, $url); }
+function redirect ($t = 5, $url = null) { Controller::_()->redirect_call ($t, $url); }
 
 function set_redirect () { if (empty ($_POST)) { setcookie ('r', redirect_page()); } }
 
@@ -301,6 +305,4 @@ function mb_strcasecmp ($str_1, $str_2, $encoding = null) {
 function name () { return info ($_SERVER ['PHP_SELF'])['filename']; };
 
 function info ($path) { return pathinfo ($path); };
-
-function test ($data) { echo '<pre>'; print_r ($data); echo '</pre>'; };
 ?>

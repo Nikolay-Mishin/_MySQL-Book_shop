@@ -5,10 +5,12 @@ Class Router {
 
     public static function _ () { return new self; }
 
-    private function user_is_authorized () { return checkUserIsAuthorized(); }
+    private function get_this () { return $this; }
 
-    private function user_is_admin () {
-        return $this->user_is_authorized() && (int) $_COOKIE['u'] === 1 ? true : false;
+    public function test () {
+        echo 'user_is_authorized = ' . $this->user_is_authorized().'<br>';
+        echo 'user_is_admin = ' . $this->user_is_admin().'<br>';
+        test ($_COOKIE);
     }
 
     public function url_locked ($locked = true, $auth = false, $admin = false) {
@@ -18,6 +20,10 @@ Class Router {
         $this->locked_url['admin'] = $admin;
         $this->url_is_locked();
     }
+
+    public function url_parse () { return url_parse(); }
+
+    public function get_url () { return get_url(); }
 
     private function url_is_locked () {
         $locked_url = $this->locked_url;
@@ -29,7 +35,7 @@ Class Router {
             }
             if ($locked_url['admin'] && !$this->user_is_admin()) {
                 test ('Просмотр данной страницы доступен только Администрации!');
-                redirect (3, DIR_AUTH);
+                redirect (3, INDEX);
             }
             if ($locked_url['auth'] && !$this->user_is_authorized()) {
                 test ('Для доступа к данной странице необходимо авторизироваться!');
@@ -38,18 +44,8 @@ Class Router {
         }
     }
 
-    private function get_url () {
-        $pattern = strtolower (str_replace ('/', '\/', BASE_DIR));
-        return preg_split ("/$pattern/", strtolower ($_SERVER['PHP_SELF']))[1];
-    }
+    private function user_is_authorized () { return checkUserIsAuthorized(); }
 
-    private function get_this () { test ($this); }
-
-    public function test () {
-        echo 'user_is_authorized = ' . $this->user_is_authorized().'<br>';
-        echo 'user_is_admin = ' . $this->user_is_admin().'<br>';
-        test ($_COOKIE);
-        test ($this->get_url());
-    }
+    private function user_is_admin () { return $this->user_is_authorized() && (int) $_COOKIE['u'] === 1 ? true : false; }
 }
 ?> 
