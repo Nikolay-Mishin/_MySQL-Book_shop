@@ -2,7 +2,7 @@
 require_once '../core/main.php';
 
 $obj = Router::_();
-$obj->url_locked (false, true);
+$obj->url_locked (false, true, true);
 
 $data = [DA.name()];
 $pages = [_AUTHORS.name(), PAGINAT];

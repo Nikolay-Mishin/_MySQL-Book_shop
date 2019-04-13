@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Апр 11 2019 г., 02:08
+-- Время создания: Апр 13 2019 г., 22:39
 -- Версия сервера: 10.1.37-MariaDB
 -- Версия PHP: 7.3.1
 
@@ -68,7 +68,9 @@ INSERT INTO `authors` (`author_id`, `author_name`, `author_is_deleted`) VALUES
 (21, 'Агата Кристи', 0),
 (22, 'Толстой', 1),
 (23, 'Агата', 1),
-(24, 'Кристина', 1);
+(24, 'Кристина', 1),
+(25, 'Тютчев', 1),
+(26, 'Анеко Юсаги', 0);
 
 -- --------------------------------------------------------
 
@@ -107,13 +109,14 @@ INSERT INTO `books` (`book_id`, `book_name`, `book_price`, `book_publisher_id`, 
 (2, 'Преступление и наказание', 349, 4, 2011, NULL, 10, NULL, NULL, NULL, NULL, 4.33, 0),
 (3, 'Мастер и Маргарита', 500, 1, 2010, NULL, 10, NULL, NULL, NULL, NULL, 3.00, 0),
 (4, 'Капитанская дочка', 320, 4, 2013, NULL, 22, NULL, NULL, NULL, NULL, 3.50, 0),
-(5, 'Сборник стихотворений', 450, 3, 2015, NULL, 20, NULL, NULL, NULL, NULL, 4.00, 0),
-(6, 'Сборник Сказок', 400, 3, 2010, NULL, NULL, NULL, NULL, NULL, NULL, 2.00, 0),
+(5, 'Сборник стихов', 450, 3, 2015, NULL, 20, NULL, NULL, NULL, NULL, 4.00, 0),
+(6, 'Сборник Сказок', 400, 3, 2010, NULL, NULL, NULL, NULL, NULL, NULL, 2.00, 1),
 (7, 'Карнелион', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
 (8, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
 (9, 'Монти Оум', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
 (10, 'Золотая рыба', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
-(11, 'Дюймовочка', 200, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0);
+(11, 'Дюймовочка', 200, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0),
+(12, 'Сон в летнюю ночь', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0);
 
 -- --------------------------------------------------------
 
@@ -172,26 +175,8 @@ CREATE TABLE `connects` (
 --
 
 INSERT INTO `connects` (`connect_id`, `connect_user_id`, `connect_token`, `connect_token_time`, `connect_session`) VALUES
-(2, 1, 'sink1bbibqzpbxy7v5i28k2edg8aonko', '2019-03-16 13:22:46', '1mm1rfmm6mq5esaejml7im837l'),
-(94, 13, 'azvankvd7fnje84h4cutttsn97hx4mid', '2019-04-06 22:57:10', 'lcf4539jtdoobqh6a4lmvmsqsb'),
-(98, 1, 'e0y4mecbqfgcl0ypr79l2vrum5mqm661', '2019-04-07 12:57:20', 'p5meea44i2m9h67olqp8svt7gi'),
-(99, 1, '2rxbtsn2vjx7lrp6zupg93wi5hwgv4n6', '2019-04-07 15:27:29', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
-(100, 1, '2h52yf2g3vvb8ow5ju1odabf4lkje4ao', '2019-04-07 15:27:39', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
-(102, 1, '0hvihoynttphqbsm4dc6eeys6nbska0d', '2019-04-07 15:40:17', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
-(104, 1, '3x2jix9qnx7l0f6tgxzfh01zxkrhgh9t', '2019-04-07 15:43:15', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
-(105, 1, 'vbi9o0n9jnkpkagqle9zkyz9ep0j30ab', '2019-04-07 15:53:07', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
-(106, 1, 'wcywlxjehuh4pp0ti8mc5vb0n63mzlcr', '2019-04-07 20:12:26', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
-(107, 1, 'tl338q92vpxi4oy6qdve2yvpfrxqclz1', '2019-04-07 20:58:00', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
-(108, 1, 'bpwl1r3baj74f8158m843iclr3vgenrw', '2019-04-07 20:58:14', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
-(109, 1, 'zafp17jwmu2sxvygkg1ly1c0tth32vfz', '2019-04-08 03:21:16', 'mh1mu3b5qdflgdv1r6jf0tnn1c'),
-(110, 1, '87axatce7ufontm19ceqgqoref4z57gz', '2019-04-08 19:17:59', 'feouuh2ksoerd2e0v6pv3ngne1'),
-(111, 1, 'ni7jwxsh2gdmswnu6l00po08j45s77kr', '2019-04-09 02:45:18', 'vuvp89arfqfdbqmplqqko17f1c'),
-(112, 1, 'r96ko9l2h8ul34g2xe5o9kzl9c626tmk', '2019-04-11 02:03:43', 'prt979l7s8q8440c90f2idb0ho'),
-(113, 1, 'nmt9zhom6sraao0v21l9vt9bot52txwf', '2019-04-11 02:09:36', 'prt979l7s8q8440c90f2idb0ho'),
-(114, 1, 'l550gyxcmxmw163ujye5fir56yfnbwql', '2019-04-11 03:15:12', 'prt979l7s8q8440c90f2idb0ho'),
-(115, 1, '69gnkiy9ai88b6gu044smdfyqrvlqmnq', '2019-04-11 03:15:40', 'prt979l7s8q8440c90f2idb0ho'),
-(116, 6, '656xkjwpobjrrxp9mo3x4nd4fco174v9', '2019-04-11 03:16:30', 'prt979l7s8q8440c90f2idb0ho'),
-(117, 6, 'x24sacv0vlxjs00vl2ozwcs381x67j2g', '2019-04-11 03:18:24', 'prt979l7s8q8440c90f2idb0ho');
+(117, 6, 'x24sacv0vlxjs00vl2ozwcs381x67j2g', '2019-04-11 03:18:24', 'prt979l7s8q8440c90f2idb0ho'),
+(124, 1, 'byezoa00ukys5x67jbhcegejq5ox54ge', '2019-04-13 22:29:56', '89meat8gcuudio5b25e1su63e8');
 
 -- --------------------------------------------------------
 
@@ -311,6 +296,29 @@ INSERT INTO `publishers` (`publisher_id`, `publisher_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `roles`
+--
+
+CREATE TABLE `roles` (
+  `role_id` int(10) UNSIGNED NOT NULL,
+  `role_name` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- ССЫЛКИ ТАБЛИЦЫ `roles`:
+--
+
+--
+-- Дамп данных таблицы `roles`
+--
+
+INSERT INTO `roles` (`role_id`, `role_name`) VALUES
+(1, 'admin'),
+(2, 'user');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `statuses`
 --
 
@@ -348,21 +356,24 @@ CREATE TABLE `users` (
   `user_gender_id` tinyint(1) UNSIGNED DEFAULT NULL,
   `user_address` text,
   `user_phone` varchar(20) DEFAULT NULL,
-  `user_is_admin` tinyint(1) UNSIGNED DEFAULT NULL
+  `user_is_admin` tinyint(1) UNSIGNED DEFAULT NULL,
+  `user_role_id` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- ССЫЛКИ ТАБЛИЦЫ `users`:
+--   `user_role_id`
+--       `roles` -> `role_id`
 --
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`user_id`, `user_name`, `user_login`, `user_email`, `user_password`, `user_birthdate`, `user_gender_id`, `user_address`, `user_phone`, `user_is_admin`) VALUES
-(1, NULL, 'admin', 'abc@email.com', '123', NULL, NULL, NULL, NULL, NULL),
-(6, NULL, 'gg', 'fggtt@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL),
-(13, NULL, 'gg1', 'fgg1@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`user_id`, `user_name`, `user_login`, `user_email`, `user_password`, `user_birthdate`, `user_gender_id`, `user_address`, `user_phone`, `user_is_admin`, `user_role_id`) VALUES
+(1, NULL, 'admin', 'abc@email.com', '202cb962ac59075b964b07152d234b70', NULL, NULL, NULL, NULL, NULL, 1),
+(6, NULL, 'gg', 'fggtt@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL, 2),
+(19, NULL, 'gg1', 'fgg1@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL, 2);
 
 --
 -- Индексы сохранённых таблиц
@@ -427,6 +438,12 @@ ALTER TABLE `publishers`
   ADD PRIMARY KEY (`publisher_id`);
 
 --
+-- Индексы таблицы `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`role_id`);
+
+--
 -- Индексы таблицы `statuses`
 --
 ALTER TABLE `statuses`
@@ -438,7 +455,8 @@ ALTER TABLE `statuses`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `user_email` (`user_email`),
-  ADD KEY `user_gender_id` (`user_gender_id`);
+  ADD KEY `user_gender_id` (`user_gender_id`),
+  ADD KEY `users_user_role_id` (`user_role_id`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -448,13 +466,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `authors`
 --
 ALTER TABLE `authors`
-  MODIFY `author_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `author_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT для таблицы `books`
 --
 ALTER TABLE `books`
-  MODIFY `book_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `book_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT для таблицы `books_authors`
@@ -466,7 +484,7 @@ ALTER TABLE `books_authors`
 -- AUTO_INCREMENT для таблицы `connects`
 --
 ALTER TABLE `connects`
-  MODIFY `connect_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+  MODIFY `connect_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
 
 --
 -- AUTO_INCREMENT для таблицы `genders`
@@ -493,6 +511,12 @@ ALTER TABLE `publishers`
   MODIFY `publisher_id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT для таблицы `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `role_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT для таблицы `statuses`
 --
 ALTER TABLE `statuses`
@@ -502,7 +526,7 @@ ALTER TABLE `statuses`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -540,6 +564,12 @@ ALTER TABLE `marks`
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`order_user_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`order_status_id`) REFERENCES `statuses` (`status_id`);
+
+--
+-- Ограничения внешнего ключа таблицы `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`user_role_id`) REFERENCES `roles` (`role_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
