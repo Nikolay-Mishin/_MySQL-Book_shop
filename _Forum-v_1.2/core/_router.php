@@ -18,5 +18,5 @@ function url_parse ($url = null) {
     return preg_split ("/$pattern/", strtolower (get_url()))[1];
 }
 
-function get_url ($url = null) { return $url ?? $_SERVER['REQUEST_URI']; }
+function get_url ($url = null) { return $url ?? $_SERVER['PHP_SELF']; }
 ?>

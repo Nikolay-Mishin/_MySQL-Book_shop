@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Апр 13 2019 г., 22:39
+-- Время создания: Апр 15 2019 г., 00:21
 -- Версия сервера: 10.1.37-MariaDB
 -- Версия PHP: 7.3.1
 
@@ -175,8 +175,7 @@ CREATE TABLE `connects` (
 --
 
 INSERT INTO `connects` (`connect_id`, `connect_user_id`, `connect_token`, `connect_token_time`, `connect_session`) VALUES
-(117, 6, 'x24sacv0vlxjs00vl2ozwcs381x67j2g', '2019-04-11 03:18:24', 'prt979l7s8q8440c90f2idb0ho'),
-(124, 1, 'byezoa00ukys5x67jbhcegejq5ox54ge', '2019-04-13 22:29:56', '89meat8gcuudio5b25e1su63e8');
+(117, 6, 'x24sacv0vlxjs00vl2ozwcs381x67j2g', '2019-04-11 03:18:24', 'prt979l7s8q8440c90f2idb0ho');
 
 -- --------------------------------------------------------
 
@@ -357,7 +356,7 @@ CREATE TABLE `users` (
   `user_address` text,
   `user_phone` varchar(20) DEFAULT NULL,
   `user_is_admin` tinyint(1) UNSIGNED DEFAULT NULL,
-  `user_role_id` int(10) UNSIGNED DEFAULT NULL
+  `user_role_id` int(10) UNSIGNED DEFAULT '2'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -372,8 +371,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `user_name`, `user_login`, `user_email`, `user_password`, `user_birthdate`, `user_gender_id`, `user_address`, `user_phone`, `user_is_admin`, `user_role_id`) VALUES
 (1, NULL, 'admin', 'abc@email.com', '202cb962ac59075b964b07152d234b70', NULL, NULL, NULL, NULL, NULL, 1),
-(6, NULL, 'gg', 'fggtt@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL, 2),
-(19, NULL, 'gg1', 'fgg1@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL, 2);
+(6, NULL, 'gg', 'fggtt@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL, 2);
 
 --
 -- Индексы сохранённых таблиц
@@ -484,7 +482,7 @@ ALTER TABLE `books_authors`
 -- AUTO_INCREMENT для таблицы `connects`
 --
 ALTER TABLE `connects`
-  MODIFY `connect_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+  MODIFY `connect_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT для таблицы `genders`

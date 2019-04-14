@@ -1,7 +1,12 @@
 <?php
+require_once _C.'Init.php';
+require_once _C.'initiolize/Init_class.php';
+$init = Init_class::_();
+
 spl_autoload_register ('autoload');
 
 function autoload ($class) {
+    $class_name = $class;
     $base_dir = preg_replace ('/\/$/', '', _C);
     $dirs = List_folder_dirs::_()->get_dirs ($base_dir);
     if (is_file ("$base_dir/$class.php")) { $class = "$base_dir/$class"; }
@@ -14,12 +19,12 @@ function autoload ($class) {
         }
     }
     require_once "$class.php";
+    global $init;
+    $init->{$class_name} = $class_name::_();
 }
 
-Class List_folder_dirs {
+Class List_folder_dirs extends Init {
     public $dirs = [];
-
-    public static function _ () { return new self; }
 
     public function get_dirs ($dir) {
         $ffs = scandir ($dir);

@@ -90,8 +90,6 @@ function auth ($db, $email, $password) {
     if ($user_id = query_select ($db, 'users', 'user_id', ['user_email' => $email, 'user_password' => $secured_password])) {
         $user_id = $user_id['user_id'];
         test ("user_id => $user_id");
-        /* $obj = Router::_();
-        $obj->url_locked (true, true, true); */
         $token = generateToken();
         $token_time = time() + 900;
         $session = $_COOKIE['PHPSESSID'];
@@ -164,6 +162,7 @@ function checkUserIsAuthorized () {
                 mysqli_query ($db, $query);
                 setcookie ('t', $token);
             }
+
             $authorized = true;
         }
     }
@@ -244,7 +243,7 @@ function query_from_array ($arr, $s = '=') {
     $d = ' AND ';
     foreach ($arr as $key => $val) {
         if ($s === 'SET') { $s = '='; $d = ', '; }
-        if (!is_array ($val)) { $val = (int) $val ?: $val; }
+        if (!is_array ($val)) { $val = mb_strcasecmp ((int) $val, $val) == 0 ? (int) $val : $val; }
         if ($s === 'LIKE') { $val = "%$val%"; }
 
         if ($s === 'cols') { $query .= query_parse ($val, $s); $d = ', '; }
@@ -267,7 +266,7 @@ function query_from_array ($arr, $s = '=') {
 }
 
 function query_parse ($val, $s = null) {
-    if (preg_match ('/AS/', $val)) {
+    if (preg_match ('/\sAS\s/', $val)) {
         $val = preg_split ('/\sAS\s/', $val);
         $val1 = query_preg ($val[0]);
         $val2 = $val[1];
@@ -282,7 +281,7 @@ function query_preg ($val) {
     preg_match ('/(.*)\((.+)\)/', $val, $preg);
     $val0 = !$preg ?: $preg[1];
     $val = !$preg ? $val : $preg[2];
-    $val = (int) $val ? $val : "`$val`";
+    $val = (int) $val ?: "`$val`";
     $val = !$preg ? $val : "$val0($val)";
     return $val;
 }
