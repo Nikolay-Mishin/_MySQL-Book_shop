@@ -7,7 +7,6 @@
 function start_session () {
 	if (session_id()) return true;
 	else return session_start();
-	
 }
 
 // Если есть активная сессия, удаляем куки сессии и уничтожаем сессию
@@ -84,8 +83,8 @@ function view ($file, $data = []) {
 function checkIfDefined ($user_id, $book_id) {
     if ($user_id && $book_id) {
         $db = connect();
-        if (query_select ($db, 'marks', '*', ['mark_user_id' => $user_id, 'mark_book_id' => $book_id])) { return true; }
-        else { return false; }
+        if (query_select ($db, 'marks', '*', ['mark_user_id' => $user_id, 'mark_book_id' => $book_id])) return true;
+        else return false;
     }
     else return false;
 }
