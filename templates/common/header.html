@@ -1,15 +1,21 @@
 <body> 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="navbar-nav">
-            <? $url = DIR === '../' ? 'authors.php' : 'admin/authors.php'; ?>
-            <a class="nav-item nav-link <?= ($title == 'Авторы')? 'active': '' ?>" href="<?= $url ?>">Авторы </a>
-            <a class="nav-item nav-link <?= ($title == 'Книги')? 'active': '' ?>" href="books.php">Книги </a>
+            <a class="nav-item nav-link <?= ($title == 'Авторы')? 'active': '' ?>" 
+                href="<?= _AUTHORS_DIR ?>">
+                Авторы
+            </a>
+            <a class="nav-item nav-link <?= ($title == 'Книги')? 'active': '' ?>" href="<?= BOOKS_DIR ?>">Книги</a>
             <? if (!checkUserIsAuthorized()): ?>
-                <a class="nav-item nav-link <?= ($title == 'Авторизация')? 'active': '' ?>" href="auth.php">Авторизация</a>
-                <a class="nav-item nav-link <?= ($title == 'Регистрация')? 'active': '' ?>" href="reg.php">Регистрация</a>
+                <a class="nav-item nav-link <?= ($title == 'Авторизация')? 'active': '' ?>" href="<?= AUTH_DIR ?>">Авторизация</a>
+                <a class="nav-item nav-link <?= ($title == 'Регистрация')? 'active': '' ?>" href="<?= REG_DIR ?>">Регистрация</a>
             <? else: ?>
-                <a class="nav-item nav-link" href="logout.php">Выход</a>
+                <a class="nav-item nav-link" href="<?= OUT_DIR ?>">Выход</a>
+            <? endif; ?>
+            <? if (user_access()): ?>
+                user_access = <?= user_access() ?>
             <? endif; ?>
 		</div>
 	</nav>
+    <? url_is_locked() ?>
 		

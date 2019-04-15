@@ -3,5 +3,7 @@ require_once '_router.php'; // global Controller for URL pathes
 require_once '_autoload.php'; // autoload Classes
 require_once '_variables.php'; // global variables
 require_once '_functions.php'; // global functions
-Router::_()->url_is_locked()->test();
+start_session();
+$router = Router::_();
+require_once CORE.'test.php';
 ?>

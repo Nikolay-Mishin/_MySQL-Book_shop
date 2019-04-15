@@ -15,7 +15,7 @@ $(document).ready(() => {
                     $.each (stars, (i, val) => { if (i + 1 <= mark) rate (val, 'far', 'fas full'); });
                     $(this).on ('click', () => {
                         cur_rate = mark;
-                        $('.btn-rate').attr ('href', `mark.php?mark=${mark}&book=${book}`);
+                        $('.btn-rate').attr ('href', `../modules/mark.php?mark=${mark}&book=${book}`);
                     });
                 }, 
                 function () { $.each (stars, (i, value) => rate (value, 'fas full', 'far')); }

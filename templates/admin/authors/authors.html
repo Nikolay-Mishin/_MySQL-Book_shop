@@ -1,7 +1,7 @@
 <? if (checkUserIsAuthorized()): ?>
 <div style="margin-bottom: 10px; "> 
     <button type="button" class="btn btn-primary">
-        <a href="author_add.php" style="color: white"> 
+        <a href="<?= module (ADD) ?>?name=<?= name(); ?>" style="color: white"> 
             Добавить 
         </a> 
     </button>
@@ -48,8 +48,13 @@
             <td> <?= $author['author_name']; ?> </td> 
             <? if (checkUserIsAuthorized()): ?>
                 <td> 
-                    <button> <a href='author_edit.php?id=<?= $author['author_id']; ?>'> Редактировать </a> </button>  
-                    <button class='remove'> <a href='author_delete.php?id=<?= $author['author_id']; ?>'> Удалить <i class="fas fa-trash-alt"></i></a> </button> 
+                    <!-- <button><a href='<?= module (EDIT) ?>?id=<?= $author['author_id']; ?>&name=<?= name(); ?>'> -->
+                    <button><a href='edit.php?id=<?= $author['author_id']; ?>&name=<?= name(); ?>'>
+                        Редактировать
+                    </a></button>  
+                    <button class='remove'> <a href='<?= module (DEL) ?>?id=<?= $author['author_id']; ?>&name=<?= name(); ?>'>
+                        Удалить <i class="fas fa-trash-alt"></i>
+                    </a></button> 
                 </td> 
             <? endif; ?> 
         </tr>

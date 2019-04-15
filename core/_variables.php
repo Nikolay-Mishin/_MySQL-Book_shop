@@ -5,6 +5,14 @@ define ('_A', 'admin/');
 define ('_D', '_data/');
 define ('_R', '_redirect/');
 define ('_COMN', 'common/');
+
+// Основные имена подключаемых модулей
+define ('PAGES', CUR_DIR.PAGES_DIR);
+define ('MODULES', CUR_DIR.MODULES_DIR);
+define ('ADD', 'add');
+define ('EDIT', 'edit');
+define ('DEL', 'delete');
+
 // Основные имена подключаемых файлов
 define ('_PAGINAT', 'pagination');
 define ('_MARK', 'mark'); // templates/common/
@@ -19,6 +27,15 @@ define ('C', CORE._COMN); // core/common/
 // Внутренние директории подключаемых файлов
 define ('DA', D._A); // core/_data/admin/
 define ('DC', D._COMN); // core/_data/common/
+define ('DM', D.MODULES_DIR); // core/_data/modules/
+
+// Основные страницы
+define ('INDEX', DIR.PAGES_DIR.'books.php');
+define ('AUTH_DIR', CUR_DIR.'auth.php');
+define ('REG_DIR', CUR_DIR.'reg.php');
+define ('OUT_DIR', CUR_DIR.'logout.php');
+define ('_AUTHORS_DIR', CUR_DIR.(url_admin_parse() ? '' : _A).PAGES_DIR.'authors.php');
+define ('BOOKS_DIR', PAGES.'books.php');
 
 // Основные директории
 define ('RES', DIR.'resources/');

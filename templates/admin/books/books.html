@@ -1,7 +1,7 @@
 <? if (checkUserIsAuthorized()): ?>
     <div style="margin-bottom: 10px; "> 
         <button type="button" class="btn btn-primary"> 
-            <a href="book_add.php" style="color: white"> 
+            <a href="<?= module (ADD) ?>?name=<?= name(); ?>" style="color: white"> 
                 Добавить 
             </a> 
         </button>
@@ -58,8 +58,12 @@
                 <td> <?= $book['author'] ?> </td> 
                 <? if (checkUserIsAuthorized()): ?>
                     <td> 
-                        <button> <a href='book_edit.php?id=<?= $book['id']; ?>'> Редактировать </a> </button>  
-                        <button class='remove'> <a href='book_delete.php?id=<?= $book['id']; ?>'> Удалить <i class="fas fa-trash-alt"></i></a> </button> 
+                        <button> <a href='<?= module (EDIT) ?>?id=<?= $book['id']; ?>&name=<?= name(); ?>'>
+                            Редактировать
+                        </a> </button>  
+                        <button class='remove'> <a href='<?= module (DEL) ?>?id=<?= $book['id']; ?>&name=<?= name(); ?>'>
+                            Удалить <i class="fas fa-trash-alt"></i>
+                        </a> </button> 
                     </td> 
                 <? endif; ?> 	
             </tr>

@@ -1,4 +1,24 @@
 <?php
+// Если сессия уже была запущена, прекращаем выполнение и возвращаем TRUE
+// (параметр session.auto_start в файле настроек php.ini должен быть выключен - значение по умолчанию)
+// Примечание: До версии 5.3.0 функция session_start()возвращала TRUE даже в случае ошибки.
+// Если вы используете версию ниже 5.3.0, выполняйте дополнительную проверку session_id()
+// после вызова session_start()
+function start_session () {
+	if (session_id()) return true;
+	else return session_start();
+	
+}
+
+// Если есть активная сессия, удаляем куки сессии и уничтожаем сессию
+function destroy_session () {
+	if (session_id()) {
+		setcookie (session_name(), session_id(), time() - 42000);
+        session_unset();
+        session_destroy();
+	}
+}
+
 function connect () {
     $db = mysqli_connect ('localhost', 'root', '', '_book_shop');
     mysqli_set_charset ($db, 'utf8');
@@ -56,6 +76,7 @@ function view ($file, $data = []) {
     if (!empty ($data)) extract ($data);
     // if (is_dir ($file) && (info ($file)['dirname'] == 'templates' || info ($file)['dirname'] == '.')) $file .= 'main';
     $file .= '.html';
+    //test ('file => ' . $file);
     if (file_exists ($file)) require_once $file;
     return $data;
 }
@@ -82,7 +103,6 @@ function reg ($db, $login, $password, $email) {
 }
 
 function auth ($db, $email, $password) {
-    Router::_()->test();
     $email = escape ($email, $db);
     $password = escape ($password, $db);
     $secured_password = md5 ($password);
@@ -112,29 +132,25 @@ function generateToken ($size = 32) {
 }
 
 function logout ($db) {
-    session_unset();
-    // Удаляем все переменные сессии.
-    $_SESSION = array();
-    // Если требуется уничтожить сессию, также необходимо удалить сессионные cookie.
-    // Замечание: Это уничтожит сессию, а не только данные сессии!
-    if (ini_get ("session.use_cookies")) {
-        $params = session_get_cookie_params();
-        setcookie (session_name(), '', time() - 42000,
-            $params["path"], $params["domain"],
-            $params["secure"], $params["httponly"]
-        );
-    }
-    // Наконец, уничтожаем сессию.
-    // session_destroy();
-
+    destroy_session();
     query_del ($db, 'connects', ['connect_user_id' => $_COOKIE['u']]);
     setcookie ('u', $_COOKIE['u'], time() - 42000);
     setcookie ('t', $_COOKIE['t'], time() - 42000);
-    setcookie ('PHPSESSID', $_COOKIE['PHPSESSID'], time() - 42000);
     redirect();
 }
 
+function url_is_locked () {
+    global $router;
+    $router->url_is_locked();
+}
+
+function user_access () {
+    global $router;
+    return url_admin_parse() && $router->user_is_admin();
+}
+
 function checkUserIsAuthorized () {
+    global $router;
     $authorized = false;
 
     if (isset ($_COOKIE['u']) && isset ($_COOKIE['t']) && isset ($_COOKIE['PHPSESSID'])) {
@@ -147,7 +163,7 @@ function checkUserIsAuthorized () {
             ['connect_id', 'connect_user_id', 'connect_token', 'connect_session', 'UNIX_TIMESTAMP(connect_token_time) AS time'], 
             ['connect_user_id' => $user, 'connect_token' => $token, 'connect_session' => $session]
         );
-
+        
         if ($connect_info = $result) {
             $expiration_time = $connect_info['time'];
 
@@ -166,6 +182,7 @@ function checkUserIsAuthorized () {
             $authorized = true;
         }
     }
+    $router->user_is_authorized = $authorized;
     return $authorized;
 }
 
@@ -296,12 +313,20 @@ function redirect_out ($redirect, $url) {
     return "Через $redirect сек. Вы будете перенаправлены на страницу: " . info ($url)['basename'];
 }
 
+function module ($name) { return MODULES."$name.php"; };
+
+function data ($name = null) { return $name.'_'.name(); };
+
+function template ($name = null) { return get_const ($name).$name.'_'.name(); };
+
+function get_const ($name = null) { return constant ((url_admin_parse() ? '_' : '').strtoupper ($name)); };
+
 function mb_strcasecmp ($str_1, $str_2, $encoding = null) {
     if (null === $encoding) { $encoding = mb_internal_encoding(); }
     return strcmp (mb_strtolower ($str_1, $encoding), mb_strtolower ($str_2, $encoding));
 }
 
-function name () { return info ($_SERVER ['PHP_SELF'])['filename']; };
+function name ($url = null) { return info ($url ?? $_SERVER ['PHP_SELF'])['filename']; };
 
 function info ($path) { return pathinfo ($path); };
 ?>

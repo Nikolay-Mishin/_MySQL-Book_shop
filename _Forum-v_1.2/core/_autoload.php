@@ -20,7 +20,7 @@ function autoload ($class) {
     }
     require_once "$class.php";
     global $init;
-    $init->{$class_name} = $class_name::_();
+    $init->$class_name = $class_name::_();
 }
 
 Class List_folder_dirs extends Init {
@@ -36,8 +36,7 @@ Class List_folder_dirs extends Init {
 
         foreach ($ffs as $ff) {
             if (is_dir ("$dir/$ff")) {
-                $pattern = str_replace ('/', '\/', _C);
-                $this->dirs[] = $dir === 'classes' ? $ff : preg_replace ("/$pattern/", '', "$dir/$ff");
+                $this->dirs[] = $dir === 'classes' ? $ff : preg_replace ('/'.url_pattern (_C).'/', '', "$dir/$ff");
                 $this->get_dirs ("$dir/$ff");
             }
         }

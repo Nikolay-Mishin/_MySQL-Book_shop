@@ -290,7 +290,7 @@ function redirect ($t = 5, $url = null) { Controller::_()->redirect_call ($t, $u
 
 function set_redirect () { if (empty ($_POST)) { setcookie ('r', redirect_page()); } }
 
-function redirect_page () { return Controller::_()->_ref(); }
+function redirect_page () { return Controller::_ref(); }
 
 function redirect_out ($redirect, $url) {
     return "Через $redirect сек. Вы будете перенаправлены на страницу: " . info ($url)['basename'];

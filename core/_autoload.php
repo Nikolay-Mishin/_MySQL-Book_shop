@@ -7,7 +7,7 @@ spl_autoload_register ('autoload');
 
 function autoload ($class) {
     $class_name = $class;
-    $base_dir = preg_replace ('/\/$/', '', _C);
+    $base_dir = dir_to_file (_C);
     $dirs = List_folder_dirs::_()->get_dirs ($base_dir);
     if (is_file ("$base_dir/$class.php")) { $class = "$base_dir/$class"; }
     else {

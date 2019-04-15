@@ -4,7 +4,12 @@ class Controller extends Core {
 
     public static function _ref () { return key_exists ('HTTP_REFERER', $_SERVER) ? $_SERVER['HTTP_REFERER'] : INDEX; }
 
-    private function _method () { return $_SERVER['REQUEST_METHOD']; }
+    public static function _redir () {
+        $url = Controller::_ref();
+        return $url = Controller::_method() == 'GET' ? $url : !in_array ('r', $_COOKIE) ?: $_COOKIE['r'];
+    }
+
+    public static function _method () { return $_SERVER['REQUEST_METHOD']; }
 
     private function GET ($t, $url) { $this->redirect ($t, $url ?? redirect_page()); }
 
