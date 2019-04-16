@@ -50,6 +50,7 @@ define ('Awesome', FONTS.'fontawesome-5.7.2/');
 
 // Шаблоны
 define ('TEMPS', DIR.'templates/');
+define ('MAIN', TEMPS.'main');
 // define ('_RED', TEMPS._R); // templates/_redirect/
 define ('COMN', TEMPS._COMN); // templates/common/
 // Основные шаблоны

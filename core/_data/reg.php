@@ -3,6 +3,7 @@ $title = 'Регистрация';
 
 set_redirect();
 
+$errors = [];
 if (isset ($_POST['login']) && isset ($_POST['password']) && isset ($_POST['password_dub']) && isset ($_POST['email'])) {
     $login = $_POST['login']; 
     $password = $_POST['password']; 
@@ -16,8 +17,9 @@ if (isset ($_POST['login']) && isset ($_POST['password']) && isset ($_POST['pass
         auth ($db, $email, $password);
     } 
     else {
-        load (REG, $title, compact ('errors'));
-        exit;
+        test (mysqli_error_list($db));
+        //load (D.name(), REG, ['errors']);
+        //exit;
     }
 }
 ?>

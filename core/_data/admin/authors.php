@@ -13,6 +13,4 @@ $pages_count = $get_rows[0];
 close ($db);
 
 $url = "./".name().".php?count=$count&";
-
-
 ?>

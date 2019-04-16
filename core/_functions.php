@@ -52,8 +52,12 @@ function escape ($str, $db) {
 }
 
 function load ($data, $page, $args = []) {
+    // test ($page);
+    // test ($data);
+    // test ($args);
     if (!is_array ($page)) {
         $data = load_data ($data, $args);
+        // test ($data);
         $title = $data['title'] ?? '';
         require_once C.'head.php'; // head
         require_once C.'header.php'; // head
@@ -109,18 +113,19 @@ function checkIfDefined ($user_id, $book_id) {
 }
 
 function validate ($db, $login, $password, $password2, $email, $errors = []) {
-    if ($password == '' || $login == '' || $password2 == '') $errors[] = 'Не все данные заполнены';
-    if ($password <> $password2) $errors[] = 'Пароли не совпадают';
-    if (query_select ($db, 'users', 'user_id', ['user_login' => $login])) { $errors[] = 'Логин уже занят!'; }
+    if ($password == '' || $login == '' || $password2 == '') $errors['require'] = 'Не все данные заполнены!';
+    if ($password <> $password2) $errors['password'] = 'Пароли не совпадают!';
+    if (query_select ($db, 'users', 'user_id', ['user_login' => $login])) { $errors['login'] = 'Логин уже занят!'; }
     return $errors;
 }
 
 function reg ($db, $login, $password, $email) {
     $secured_password = md5 ($password);
-    query_add ($db, 'users', ['user_id' => 'LAST_INSERT_ID()', 'user_login' => $login, 'user_password' => $secured_password, 'user_email' => $email]);
+    query_add ($db, 'users', ['user_id' => '', 'user_login' => $login, 'user_password' => $secured_password, 'user_email' => $email]);
 }
 
 function auth ($db, $email, $password) {
+    test ($_COOKIE);
     $email = escape ($email, $db);
     $password = escape ($password, $db);
     $secured_password = md5 ($password);
@@ -133,7 +138,7 @@ function auth ($db, $email, $password) {
         $session = $_COOKIE['PHPSESSID'];
         setcookie ('u', $user_id);
         setcookie ('t', $token);
-        query_add ($db, 'connects', ['connect_user_id' => $user_id, 'connect_token' => $token, 'connect_token_time' => "FROM_UNIXTIME ($token_time)", 'connect_session' => $session]);
+        query_add ($db, 'connects', ['connect_id' => '', 'connect_user_id' => $user_id, 'connect_token' => $token, 'connect_token_time' => "FROM_UNIXTIME($token_time)", 'connect_session' => $session]);
         close ($db);
         $_SESSION['token'] = $token;
         redirect();
@@ -263,9 +268,18 @@ function query_get_rows ($db, $table, $condition = null, $filter = null, $offset
 }
 
 function query_add ($db, $table, $cols) {
+    $id = '';
+    if (preg_match ('/(.+)_id$/', array_key_first ($cols))) {
+        $cols[array_key_first ($cols)] = $cols[array_key_first ($cols)] == ''
+            ? query_get_rows ($db, $table)[0] + 1
+            : ($cols[array_key_first ($cols)] != 'last' ? $cols[array_key_first ($cols)] : 'LAST_INSERT_ID()')
+        ;
+        test ('id => ' . $cols[array_key_first ($cols)]);
+    }
+    //$cols[array_key_first ($cols)] = $id;
     $cols = !is_array ($cols) ? "`$cols`" : query_from_array ($cols, 'SET');
     $query = "INSERT INTO `$table` SET $cols";
-    // echo $query.'<br>';
+    test ($query);
     mysqli_query ($db, $query);
 }
 

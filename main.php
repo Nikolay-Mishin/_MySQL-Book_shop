@@ -1,4 +1,4 @@
 <?php
 require_once 'core/main.php';
-load (D.name(), REG, ['errors']);
+load (D.name(), MAIN, ['books']);
 ?>
