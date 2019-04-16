@@ -7,9 +7,12 @@ $filter = $_GET['filter'] ?? '';
 $offset = $count * ($page - 1);
 
 $db = connect();
-$authors = query_found_rows ($db, 'authors', ['author_is_deleted' => 0], ['author_name' => "$filter"], $offset, $count);
-$pages_count = query_get_rows ($db, $count);
+$get_rows = query_get_rows ($db, 'authors', ['author_is_deleted' => 0], ['author_name' => "$filter"], $offset, $count);
+$authors = $get_rows[1];
+$pages_count = $get_rows[0];
 close ($db);
 
 $url = "./".name().".php?count=$count&";
+
+
 ?>

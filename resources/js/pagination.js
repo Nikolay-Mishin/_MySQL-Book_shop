@@ -1,5 +1,5 @@
 document.addEventListener ("DOMContentLoaded", () => {
-    let file = document.location.pathname.toLowerCase().split ('/_git/_MySQL/_MySQL-Book_shop/admin/'.toLowerCase())[1];
+    let file = document.location.pathname.toLowerCase().split ('/_git/_MySQL/_MySQL-Book_shop/admin/pages/'.toLowerCase())[1];
     let count = document.querySelector ('[name="count"]');
     let filter = document.querySelector ('[name="filter"]');
     let btn = document.getElementById ('pagination');

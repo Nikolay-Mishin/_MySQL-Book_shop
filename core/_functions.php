@@ -2,20 +2,39 @@
 // Если сессия уже была запущена, прекращаем выполнение и возвращаем TRUE
 // (параметр session.auto_start в файле настроек php.ini должен быть выключен - значение по умолчанию)
 // Примечание: До версии 5.3.0 функция session_start()возвращала TRUE даже в случае ошибки.
-// Если вы используете версию ниже 5.3.0, выполняйте дополнительную проверку session_id()
-// после вызова session_start()
-function start_session () {
-	if (session_id()) return true;
-	else return session_start();
+// Если вы используете версию ниже 5.3.0, выполняйте дополнительную проверку session_id() после вызова session_start()
+// Инициализируем сессию. Если вы используете session_name("something"), не забудьте добавить это перед session_start()!
+function session_started () { return session_id(); }
+
+function start_session () { return session_started() ? true : session_start(); }
+
+function destroy_session () {
+    // Если есть активная сессия, удаляем куки сессии и уничтожаем сессию
+	if (session_started()) {
+        $_SESSION = array(); // Удаляем все переменные сессии.
+        // Если требуется уничтожить сессию, также необходимо удалить сессионные cookie.
+        // Замечание: Это уничтожит сессию, а не только данные сессии!
+        if (ini_get ("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie (session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        session_destroy(); // Наконец, уничтожаем сессию.
+	}
 }
 
-// Если есть активная сессия, удаляем куки сессии и уничтожаем сессию
-function destroy_session () {
-	if (session_id()) {
-		setcookie (session_name(), session_id(), time() - 42000);
-        session_unset();
-        session_destroy();
-	}
+function delete_cookies ($action) {
+    foreach (get_data_cookies ($action) as $cookie) {
+        setcookie ($cookie, $_COOKIE[$cookie], time() - 42000);
+    }
+    return $_COOKIE;
+}
+
+function get_data_cookies ($action = null) {
+    global $data_cookies;
+    return $action ? $data_cookies[$action] : $data_cookies;
 }
 
 function connect () {
@@ -133,22 +152,33 @@ function generateToken ($size = 32) {
 function logout ($db) {
     destroy_session();
     query_del ($db, 'connects', ['connect_user_id' => $_COOKIE['u']]);
-    setcookie ('u', $_COOKIE['u'], time() - 42000);
-    setcookie ('t', $_COOKIE['t'], time() - 42000);
+    delete_cookies ('auth');
+    test ($_SESSION);
+    test ($_COOKIE);
     redirect();
 }
 
-function url_is_locked () {
+function get_user_access () {
     global $router;
-    $router->url_is_locked();
+    return $router->user_access();
 }
 
 function user_access () {
     global $router;
-    return url_admin_parse() && $router->user_is_admin();
+    return $router->user_access;
 }
 
 function checkUserIsAuthorized () {
+    global $router;
+    return $router->user_is_authorized;
+}
+
+function user_is_admin () {
+    global $router;
+    return $router->user_is_admin;
+}
+
+function user_is_authorized () {
     global $router;
     $authorized = false;
 
@@ -181,7 +211,6 @@ function checkUserIsAuthorized () {
             $authorized = true;
         }
     }
-    $router->user_is_authorized = $authorized;
     return $authorized;
 }
 
@@ -222,14 +251,15 @@ function query_select ($db, $table, $cols = '*', $condition = null) {
     return query_build ($db, $table, $cols, null, $condition);
 }
 
-function query_found_rows ($db, $table, $condition = null, $filter = null, $offset, $count = 1) {
+function query_found_rows ($db, $table, $condition = null, $filter = null, $offset = null, $count = 1) {
     return query_build ($db, $table, 'SQL_CALC_FOUND_ROWS *', null, $condition, $filter, null, $offset, $count);
 }
 
-function query_get_rows ($db, $count) {
+function query_get_rows ($db, $table, $condition = null, $filter = null, $offset = null, $count = 1) {
+    $found_rows = query_found_rows ($db, $table, $condition, $filter, $offset, $count);
     $result = mysqli_query ($db, "SELECT FOUND_ROWS()");
-    $num_rows = mysqli_fetch_row ($result)[0];
-    return ceil ($num_rows / $count);
+    $num_rows = ceil (mysqli_fetch_row ($result)[0] / $count);
+    return [$num_rows, $found_rows];
 }
 
 function query_add ($db, $table, $cols) {

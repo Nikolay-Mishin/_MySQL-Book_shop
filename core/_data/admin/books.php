@@ -24,8 +24,7 @@ $books = query_join ($db, 'books',
     $count
 );
 
-query_found_rows ($db, 'books', ['book_is_deleted' => 0], ['book_name' => "$filter"], $offset, $count);
-$pages_count = query_get_rows ($db, $count);
+$pages_count = query_get_rows ($db, 'books', ['book_is_deleted' => 0], ['book_name' => "$filter"], $offset, $count)[0];
 close ($db); 
 
 $url = "./books.php?count=$count&"; 

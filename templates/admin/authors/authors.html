@@ -48,8 +48,7 @@
             <td> <?= $author['author_name']; ?> </td> 
             <? if (checkUserIsAuthorized()): ?>
                 <td> 
-                    <!-- <button><a href='<?= module (EDIT) ?>?id=<?= $author['author_id']; ?>&name=<?= name(); ?>'> -->
-                    <button><a href='edit.php?id=<?= $author['author_id']; ?>&name=<?= name(); ?>'>
+                    <button><a href='<?= module (EDIT) ?>?id=<?= $author['author_id']; ?>&name=<?= name(); ?>'>
                         Редактировать
                     </a></button>  
                     <button class='remove'> <a href='<?= module (DEL) ?>?id=<?= $author['author_id']; ?>&name=<?= name(); ?>'>

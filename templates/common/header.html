@@ -1,4 +1,7 @@
 <body> 
+    <div>
+        <? get_user_access() ?>
+    </div>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="navbar-nav">
             <a class="nav-item nav-link <?= ($title == 'Авторы')? 'active': '' ?>" 
@@ -17,5 +20,4 @@
             <? endif; ?>
 		</div>
 	</nav>
-    <? url_is_locked() ?>
 		

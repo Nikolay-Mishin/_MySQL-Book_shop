@@ -2,8 +2,8 @@
     <script src="<?= LIBS.'bootstrap/js/bootstrap.js' ?>"> </script>
 
     <script src="<?= JS.'script.js' ?>"></script>
-    <? if (DIR === '../'): ?>
-        <script src="./authors.js"></script>
+    <? if (user_is_admin()): ?>
+        <script src="<?= JS.'./authors.js' ?>"></script>
         <script src="<?= JS.'./pagination.js' ?>"></script>
     <? endif; ?>
     <? if (name() === 'reg'): ?>
