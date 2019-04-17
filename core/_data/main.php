@@ -1,5 +1,5 @@
 <?php
-$title = 'Книги';
+$title = 'Главная';
 
 $db = connect();
 $books = query_join ($db, 'books',

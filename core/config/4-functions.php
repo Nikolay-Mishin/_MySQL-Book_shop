@@ -138,7 +138,7 @@ function auth ($db, $email, $password) {
         $session = $_COOKIE['PHPSESSID'];
         setcookie ('u', $user_id);
         setcookie ('t', $token);
-        query_add ($db, 'connects', ['connect_id' => '', 'connect_user_id' => $user_id, 'connect_token' => $token, 'connect_token_time' => "FROM_UNIXTIME($token_time)", 'connect_session' => $session]);
+        query_add ($db, 'connects', ['connect_user_id' => $user_id, 'connect_token' => $token, 'connect_token_time' => "FROM_UNIXTIME($token_time)", 'connect_session' => $session]);
         close ($db);
         $_SESSION['token'] = $token;
         redirect();
@@ -268,14 +268,14 @@ function query_get_rows ($db, $table, $condition = null, $filter = null, $offset
 }
 
 function query_add ($db, $table, $cols) {
-    $id = '';
-    if (preg_match ('/(.+)_id$/', array_key_first ($cols))) {
-        $cols[array_key_first ($cols)] = $cols[array_key_first ($cols)] == ''
-            ? query_get_rows ($db, $table)[0] + 1
-            : ($cols[array_key_first ($cols)] != 'last' ? $cols[array_key_first ($cols)] : 'LAST_INSERT_ID()')
-        ;
-        test ('id => ' . $cols[array_key_first ($cols)]);
+    test ($cols);
+    global $data_tables;
+    test ('table_id => ' . $data_tables[$table]);
+    if (!array_key_exists ($data_tables[$table], $cols)) { $cols[$data_tables[$table]] = query_get_rows ($db, $table)[0] + 1; }
+    else if (array_key_first ($cols) == $data_tables[$table]) {
+        $cols[array_key_first ($cols)] = $cols[array_key_first ($cols)] != 'last' ? $cols[array_key_first ($cols)] : 'LAST_INSERT_ID()';
     }
+    test ($cols);
     $cols = !is_array ($cols) ? "`$cols`" : query_from_array ($cols, 'SET');
     $query = "INSERT INTO `$table` SET $cols";
     test ($query);

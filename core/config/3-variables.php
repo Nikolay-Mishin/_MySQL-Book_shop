@@ -30,12 +30,13 @@ define ('DC', D._COMN); // core/_data/common/
 define ('DM', D.MODULES_DIR); // core/_data/modules/
 
 // Основные страницы
-define ('INDEX', DIR.PAGES_DIR.'books.php');
+define ('INDEX', DIR.'main.php');
 define ('AUTH_DIR', CUR_DIR.'auth.php');
 define ('REG_DIR', CUR_DIR.'reg.php');
 define ('OUT_DIR', CUR_DIR.'logout.php');
 define ('_AUTHORS_DIR', CUR_DIR.(url_admin_parse() ? '' : _A).PAGES_DIR.'authors.php');
 define ('BOOKS_DIR', PAGES.'books.php');
+define ('BOOK_DIR', PAGES.'book.php');
 
 // Основные директории
 define ('RES', DIR.'resources/');

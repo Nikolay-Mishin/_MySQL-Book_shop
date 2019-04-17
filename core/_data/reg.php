@@ -18,7 +18,6 @@ if (isset ($_POST['login']) && isset ($_POST['password']) && isset ($_POST['pass
     } 
     else {
         test (mysqli_error_list($db));
-        //load (D.name(), REG, ['errors']);
         //exit;
     }
 }
