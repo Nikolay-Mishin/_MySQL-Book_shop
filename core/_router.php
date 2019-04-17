@@ -8,16 +8,18 @@ define ('DIR', url_full_parse());
 define ('CUR_DIR', url_cur_dir_parse());
 
 define ('CORE', DIR.'core/');
+
 define ('_CLASS', '_classes/');
+define ('CONFIG', 'config/');
+
 define ('_C', CORE._CLASS); // core/_classes/
+define ('CONF', CORE.CONFIG); // core/config/
 
 // $locked, $auth
 define ('URL_LOCKED', [
     SECURED => 1,
     'admin/books' => 0
 ]);
-
-function test ($data) { echo '<pre>'; print_r ($data); echo '</pre>'; };
 
 function url_full_parse () {
     $url = url_dir_parse (SECURED) ? url_dir_parse (SECURED)[1] : false;

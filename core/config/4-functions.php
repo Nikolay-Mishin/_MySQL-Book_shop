@@ -276,7 +276,6 @@ function query_add ($db, $table, $cols) {
         ;
         test ('id => ' . $cols[array_key_first ($cols)]);
     }
-    //$cols[array_key_first ($cols)] = $id;
     $cols = !is_array ($cols) ? "`$cols`" : query_from_array ($cols, 'SET');
     $query = "INSERT INTO `$table` SET $cols";
     test ($query);

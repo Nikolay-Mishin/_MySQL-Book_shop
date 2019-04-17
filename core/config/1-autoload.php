@@ -7,7 +7,7 @@ spl_autoload_register ('autoload');
 
 function autoload ($class) {
     $class_name = $class;
-    $base_dir = dir_to_file (_C);
+    $base_dir = _C;
     $dirs = List_folder_dirs::_()->get_dirs ($base_dir);
     if (is_file ("$base_dir/$class.php")) { $class = "$base_dir/$class"; }
     else {
@@ -27,10 +27,7 @@ Class List_folder_dirs extends Init {
     public $dirs = [];
 
     public function get_dirs ($dir) {
-        $ffs = scandir ($dir);
-
-        unset ($ffs[array_search ('.', $ffs, true)]);
-        unset ($ffs[array_search ('..', $ffs, true)]);
+        $ffs = get_dir_content ($dir);
         
         if (count ($ffs) < 1) { return; } // prevent empty ordered elements
 

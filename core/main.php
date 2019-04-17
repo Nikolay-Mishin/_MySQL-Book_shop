@@ -1,11 +1,15 @@
 <?php
-require_once '_router.php'; // global Controller for URL pathes
-require_once '_autoload.php'; // autoload Classes
-require_once '_data/_variables.php'; // global variables
-require_once '_variables.php'; // global variables
-require_once '_functions.php'; // global functions
+function test ($data) { echo '<pre>'; print_r ($data); echo '</pre>'; };
+
+require_once '_router.php';
+
+function get_dir_content ($dir) {
+    $files = scandir (dir_to_file ($dir));
+    unset ($files[array_search ('.', $files, true)]);
+    unset ($files[array_search ('..', $files, true)]);
+    return $files;
+}
+foreach (get_dir_content (CONF) as $file) { require_once CONF.$file; }
+
 start_session();
-$router = Router::_();
-$test = false;
-// test ($_COOKIE);
 ?>
