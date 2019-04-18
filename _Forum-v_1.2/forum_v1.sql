@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Апр 12 2019 г., 22:33
+-- Время создания: Апр 18 2019 г., 20:18
 -- Версия сервера: 10.1.37-MariaDB
 -- Версия PHP: 7.3.1
 
@@ -80,8 +80,8 @@ INSERT INTO `genders` (`gender_id`, `gender_name`) VALUES
 --
 
 CREATE TABLE `roles` (
-  `roles_id` int(10) NOT NULL,
-  `roles_name` varchar(255) NOT NULL
+  `role_id` int(10) NOT NULL,
+  `role_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -92,9 +92,9 @@ CREATE TABLE `roles` (
 -- Дамп данных таблицы `roles`
 --
 
-INSERT INTO `roles` (`roles_id`, `roles_name`) VALUES
-(1, 'user'),
-(2, 'admin');
+INSERT INTO `roles` (`role_id`, `role_name`) VALUES
+(1, 'admin'),
+(2, 'user');
 
 -- --------------------------------------------------------
 
@@ -279,7 +279,7 @@ CREATE TABLE `users` (
   `user_gender_id` tinyint(1) NOT NULL,
   `user_address` text NOT NULL,
   `user_phone` varchar(20) NOT NULL,
-  `user_roles_id` int(10) NOT NULL,
+  `user_role_id` int(10) NOT NULL,
   `user_nike` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -287,15 +287,15 @@ CREATE TABLE `users` (
 -- ССЫЛКИ ТАБЛИЦЫ `users`:
 --   `user_gender_id`
 --       `genders` -> `gender_id`
---   `user_roles_id`
---       `roles` -> `roles_id`
+--   `user_role_id`
+--       `roles` -> `role_id`
 --
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`user_id`, `user_login`, `user_password`, `user_name`, `user_email`, `user_birthdate`, `user_gender_id`, `user_address`, `user_phone`, `user_roles_id`, `user_nike`) VALUES
+INSERT INTO `users` (`user_id`, `user_login`, `user_password`, `user_name`, `user_email`, `user_birthdate`, `user_gender_id`, `user_address`, `user_phone`, `user_role_id`, `user_nike`) VALUES
 (1, '', '', 'Xarlen', 'adv@mail.ru', '2019-04-01', 1, 'РФ', '0', 1, 'Xarlen'),
 (2, '', '', 'Anton', 'dfg@mail.ru', '2019-04-02', 1, 'РФ', '0', 2, 'Администрация');
 
@@ -319,7 +319,7 @@ ALTER TABLE `genders`
 -- Индексы таблицы `roles`
 --
 ALTER TABLE `roles`
-  ADD PRIMARY KEY (`roles_id`);
+  ADD PRIMARY KEY (`role_id`);
 
 --
 -- Индексы таблицы `section`
@@ -361,7 +361,7 @@ ALTER TABLE `topic`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
   ADD KEY `user_gender_id` (`user_gender_id`),
-  ADD KEY `user_roles_id` (`user_roles_id`);
+  ADD KEY `user_roles_id` (`user_role_id`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -383,7 +383,7 @@ ALTER TABLE `genders`
 -- AUTO_INCREMENT для таблицы `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `roles_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `role_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `section`
@@ -449,7 +449,7 @@ ALTER TABLE `topic`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`user_gender_id`) REFERENCES `genders` (`gender_id`),
-  ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`user_roles_id`) REFERENCES `roles` (`roles_id`);
+  ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`user_role_id`) REFERENCES `roles` (`role_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

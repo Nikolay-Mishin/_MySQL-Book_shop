@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Апр 18 2019 г., 12:26
+-- Время создания: Апр 18 2019 г., 20:24
 -- Версия сервера: 10.1.37-MariaDB
 -- Версия PHP: 7.3.1
 
@@ -119,7 +119,8 @@ INSERT INTO `books` (`book_id`, `book_name`, `book_price`, `book_publisher_id`, 
 (10, 'Золотая рыба', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
 (11, 'Арлекин', 200, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0),
 (12, 'Сон в летнюю ночь', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0),
-(13, 'Война и мир', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0);
+(13, 'Война и мир', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
+(14, 'Война и мир', 200, 3, NULL, NULL, 10, NULL, NULL, NULL, NULL, 0.00, 0);
 
 -- --------------------------------------------------------
 
@@ -151,7 +152,8 @@ INSERT INTO `books_authors` (`book_author_id`, `book_author_book_id`, `book_auth
 (3, 3, 6),
 (4, 5, 5),
 (5, 2, 2),
-(6, 4, 6);
+(6, 4, 6),
+(7, 14, 3);
 
 -- --------------------------------------------------------
 
@@ -215,21 +217,11 @@ CREATE TABLE `marks` (
 --
 
 INSERT INTO `marks` (`mark_id`, `mark_user_id`, `mark_book_id`, `mark_value`, `mark_feedback`) VALUES
-(3, 1, 1, 5, ''),
-(4, 1, 2, 3, ''),
-(5, 1, 3, 3, ''),
-(6, 1, 4, 3, ''),
-(7, 1, 2, 5, ''),
-(8, 1, 2, 5, ''),
-(9, 1, 3, 3, ''),
-(10, 1, 4, 4, ''),
-(15, 1, 5, 4, ''),
-(16, 1, 9, 5, ''),
-(17, 1, 6, 4, ''),
-(18, 1, 6, 4, ''),
-(19, 1, 7, 4, ''),
-(20, 1, 7, 4, ''),
-(21, 1, 8, 3, '');
+(1, 1, 1, 5, ''),
+(2, 1, 2, 3, ''),
+(3, 1, 3, 3, ''),
+(4, 1, 4, 3, ''),
+(5, 1, 5, 4, '');
 
 --
 -- Триггеры `marks`
@@ -472,13 +464,13 @@ ALTER TABLE `authors`
 -- AUTO_INCREMENT для таблицы `books`
 --
 ALTER TABLE `books`
-  MODIFY `book_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `book_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT для таблицы `books_authors`
 --
 ALTER TABLE `books_authors`
-  MODIFY `book_author_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `book_author_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `connects`

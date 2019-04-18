@@ -1,4 +1,6 @@
 <?php
+$title = 'Главная';
+
 $db = new PDO('mysql:host=localhost;dbname=forum_v1;charset=utf8', 'root', '');
 $sql = "SELECT * FROM topic WHERE topic_show_id=1";
 // $db->query($sql); метод объекта класса PDO
