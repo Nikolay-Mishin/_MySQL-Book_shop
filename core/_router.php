@@ -1,4 +1,6 @@
 <?php
+define ('UP', '../');
+
 define ('BASE_DIR', '/_git/_MySQL/_MySQL-Book_shop/');
 define ('SECURED', 'admin/');
 define ('PAGES_DIR', 'pages/');
@@ -11,9 +13,14 @@ define ('CORE', DIR.'core/');
 
 define ('_CLASS', '_classes/');
 define ('CONFIG', 'config/');
+define ('GENERAL', 'general/');
 
 define ('_C', CORE._CLASS); // core/_classes/
 define ('CONF', CORE.CONFIG); // core/config/
+define ('GEN', CORE.GENERAL); // core/general/
+
+// General configs
+define ('CONF_GEN', CONF.GENERAL); // core/config/general/
 
 // $locked, $auth
 define ('URL_LOCKED', [

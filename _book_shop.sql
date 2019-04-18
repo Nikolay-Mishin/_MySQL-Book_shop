@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Апр 15 2019 г., 00:21
+-- Время создания: Апр 18 2019 г., 12:26
 -- Версия сервера: 10.1.37-MariaDB
 -- Версия PHP: 7.3.1
 
@@ -65,12 +65,14 @@ INSERT INTO `authors` (`author_id`, `author_name`, `author_is_deleted`) VALUES
 (18, 'Сборник', 1),
 (19, 'Рэки Кавахара', 1),
 (20, 'Рэки', 1),
-(21, 'Агата Кристи', 0),
+(21, 'Агата Кристи', 1),
 (22, 'Толстой', 1),
 (23, 'Агата', 1),
 (24, 'Кристина', 1),
 (25, 'Тютчев', 1),
-(26, 'Анеко Юсаги', 0);
+(26, 'Анеко Юсаги', 0),
+(27, 'Поливанов', 0),
+(28, 'Эйнштейн', 0);
 
 -- --------------------------------------------------------
 
@@ -110,13 +112,14 @@ INSERT INTO `books` (`book_id`, `book_name`, `book_price`, `book_publisher_id`, 
 (3, 'Мастер и Маргарита', 500, 1, 2010, NULL, 10, NULL, NULL, NULL, NULL, 3.00, 0),
 (4, 'Капитанская дочка', 320, 4, 2013, NULL, 22, NULL, NULL, NULL, NULL, 3.50, 0),
 (5, 'Сборник стихов', 450, 3, 2015, NULL, 20, NULL, NULL, NULL, NULL, 4.00, 0),
-(6, 'Сборник Сказок', 400, 3, 2010, NULL, NULL, NULL, NULL, NULL, NULL, 2.00, 1),
-(7, 'Карнелион', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
-(8, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
-(9, 'Монти Оум', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
+(6, 'Сборник Сказок', 400, 3, 2010, NULL, NULL, NULL, NULL, NULL, NULL, 4.00, 1),
+(7, 'Карнелион', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4.00, 1),
+(8, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3.00, 1),
+(9, 'Монти Оум', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5.00, 1),
 (10, 'Золотая рыба', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 1),
-(11, 'Дюймовочка', 200, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0),
-(12, 'Сон в летнюю ночь', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0);
+(11, 'Арлекин', 200, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0),
+(12, 'Сон в летнюю ночь', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0),
+(13, 'Война и мир', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0);
 
 -- --------------------------------------------------------
 
@@ -170,13 +173,6 @@ CREATE TABLE `connects` (
 --       `users` -> `user_id`
 --
 
---
--- Дамп данных таблицы `connects`
---
-
-INSERT INTO `connects` (`connect_id`, `connect_user_id`, `connect_token`, `connect_token_time`, `connect_session`) VALUES
-(117, 6, 'x24sacv0vlxjs00vl2ozwcs381x67j2g', '2019-04-11 03:18:24', 'prt979l7s8q8440c90f2idb0ho');
-
 -- --------------------------------------------------------
 
 --
@@ -227,7 +223,13 @@ INSERT INTO `marks` (`mark_id`, `mark_user_id`, `mark_book_id`, `mark_value`, `m
 (8, 1, 2, 5, ''),
 (9, 1, 3, 3, ''),
 (10, 1, 4, 4, ''),
-(15, 1, 5, 4, '');
+(15, 1, 5, 4, ''),
+(16, 1, 9, 5, ''),
+(17, 1, 6, 4, ''),
+(18, 1, 6, 4, ''),
+(19, 1, 7, 4, ''),
+(20, 1, 7, 4, ''),
+(21, 1, 8, 3, '');
 
 --
 -- Триггеры `marks`
@@ -371,7 +373,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `user_name`, `user_login`, `user_email`, `user_password`, `user_birthdate`, `user_gender_id`, `user_address`, `user_phone`, `user_is_admin`, `user_role_id`) VALUES
 (1, NULL, 'admin', 'abc@email.com', '202cb962ac59075b964b07152d234b70', NULL, NULL, NULL, NULL, NULL, 1),
-(6, NULL, 'gg', 'fggtt@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL, 2);
+(2, NULL, 'gg', 'fggtt@hhhjy.ru', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, NULL, NULL, NULL, 2);
 
 --
 -- Индексы сохранённых таблиц
@@ -464,13 +466,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `authors`
 --
 ALTER TABLE `authors`
-  MODIFY `author_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `author_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT для таблицы `books`
 --
 ALTER TABLE `books`
-  MODIFY `book_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `book_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT для таблицы `books_authors`
@@ -482,7 +484,7 @@ ALTER TABLE `books_authors`
 -- AUTO_INCREMENT для таблицы `connects`
 --
 ALTER TABLE `connects`
-  MODIFY `connect_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `connect_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `genders`
@@ -494,7 +496,7 @@ ALTER TABLE `genders`
 -- AUTO_INCREMENT для таблицы `marks`
 --
 ALTER TABLE `marks`
-  MODIFY `mark_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `mark_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT для таблицы `orders`
@@ -512,7 +514,7 @@ ALTER TABLE `publishers`
 -- AUTO_INCREMENT для таблицы `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `role_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `role_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `statuses`
@@ -524,7 +526,7 @@ ALTER TABLE `statuses`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

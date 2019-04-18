@@ -1,0 +1,36 @@
+/* ...................................... 
+    
+			SNIPPETS
+    
+   ...................................... */
+
+/* ------ очистка обтекания ------ */
+
+._clear-fix::after, ._clear-fix::before {content: ''; display: block; clear: both;}
+
+/* ------ добавление символа до и после | заключение в кавычки ------ */
+
+.symbol::before {content: '\00AB';}
+.symbol::after {content: '\00BB';}
+
+/* ------ адаптивное изображение ------ */
+
+._adaptive_img {max-width: 100%; height: auto;}
+._adaptive_img img {width: 100%; height: auto;}
+
+._adaptive_img_h {max-width: auto; height: 100%;}
+._adaptive_img_h img {width: auto; height: 100%;}
+
+/* ------ позиционирование элемента ------ */
+
+._rel {position: relative;}
+._abs {position: absolute;}
+
+._top {top: 0;}
+._bottom {bottom: 0;}
+._left {left: 0;}
+._right {right: 0;}
+
+._center {top: 50%; left: 50%; margin-right: -50%; transform: translate(-50%, -50%);}
+._center_x {left: 50%; margin-right: -50%; transform: translate(-50%, 0);}
+._center_y {top: 50%; transform: translate(0, -50%);}
