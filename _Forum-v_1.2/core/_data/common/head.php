@@ -4,7 +4,12 @@ $meta  = [
     ['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1.0'],
     ['http-equiv' => 'X-UA-Compatible', 'content' => 'ie=edge']
 ];
-$libs = ['bootstrap/css/bootstrap', '_snipets'];
+$libs = [
+    'bootstrap-4.3.1-dist/css/bootstrap.min',
+    'fontawesome/css/all',
+    'offcanvas',
+    // '_snipets'
+];
 $fonts = [
     Awesome.'css/all',
     'links' => [
@@ -12,5 +17,8 @@ $fonts = [
     ]
 ];
 $form = mb_strcasecmp ($title, 'Отзыв') == 0 ? 'form' : '';
-$css = ['style', $form];
+$css = [
+    // 'style', 
+    $form
+];
 ?>

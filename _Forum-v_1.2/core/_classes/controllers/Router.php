@@ -14,7 +14,7 @@ Class Router extends Core {
         test ('user_access => ' . $this->user_access);
         test ('user_is_authorized => ' . $this->user_is_authorized);
         test ('user_is_admin => ' . $this->user_is_admin);
-        $this->call();
+        $this->get_method();
         test ('url => ' . $this->get_url());
         test ('url_parse => ' . $this->url_parse());
         test ('url_admin_parse = ' . $this->url_admin_parse());
@@ -50,7 +50,6 @@ Class Router extends Core {
             $url = is_dir (DIR.$url) ? $url : "$url.php";
             $locked_url = preg_match ('/'.url_pattern ($url).'/', $this->url_parse()) ? $access : $locked_url;
         }
-        test ('access => ' . $locked_url);
         $locked_url = $locked_url !== null ? $this->url_locked ($locked_url) : null;
         if ($locked_url) {
             $locked_url = $this->locked_url;

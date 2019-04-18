@@ -1,4 +1,8 @@
 <?php
+function test ($data) { echo '<pre>'; print_r ($data); echo '</pre>'; };
+
+define ('UP', '../');
+
 define ('BASE_DIR', '/_git/_MySQL/_MySQL-Book_shop/');
 define ('SECURED', 'admin/');
 define ('PAGES_DIR', 'pages/');
@@ -7,15 +11,29 @@ define ('MODULES_DIR', 'modules/');
 define ('DIR', url_full_parse());
 define ('CUR_DIR', url_cur_dir_parse());
 
-define ('CORE', DIR.'core/');
+define ('CORE', DIR.'core/'); // core/
 
 define ('_CLASS', '_classes/');
-define ('CONFIG', 'config/');
-define ('GENERAL', 'general/');
+define ('_CONF', 'config/');
+define ('_GEN', 'general/');
 
 define ('_C', CORE._CLASS); // core/_classes/
-define ('CONF', CORE.CONFIG); // core/config/
-define ('GEN', CORE.GENERAL); // core/general/
+define ('CONF', CORE._CONF); // core/config/
+define ('GEN', CORE._GEN); // core/general/
+
+// General configs
+define ('MAIN_CONF', CONF.'main.php'); // core/config/
+define ('_TEST', CONF.'_test'); // core/config/
+define ('GEN_CONF', CONF._GEN); // core/config/general/
+define ('INIT', GEN_CONF.'init.php'); // core/config/general/
+
+require_once MAIN_CONF;
+
+function using ($path, $ext = '.php') {
+    $path = !is_dir ($path) ? $path.$ext : $path;
+    if (is_file ($path)) { Using::file ($path); }
+    if (is_dir ($path)) { Using::dir ($path); }
+}
 
 // $locked, $auth
 define ('URL_LOCKED', [
@@ -43,7 +61,7 @@ function url_parse ($url = null) { return preg_split ('/'.strtolower (url_patter
 
 function url_pattern ($dir) { return str_replace ('/', '\/', $dir); }
 
-function dir_to_file ($dir) { return preg_replace ('/\/$/', '', $dir); }
+function dir_to_file ($dir) { return Using::dir_to_file ($dir); }
 
 function get_url ($url = null) { return $url ?? $_SERVER['PHP_SELF']; }
 ?>

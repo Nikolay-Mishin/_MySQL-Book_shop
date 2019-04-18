@@ -1,3 +1,3 @@
 <?php
-class Init_class extends Init {}
+class Init_class extends Core {}
 ?>

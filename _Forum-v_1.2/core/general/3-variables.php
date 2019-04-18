@@ -30,6 +30,7 @@ define ('DC', D._COMN); // core/_data/common/
 define ('DM', D.MODULES_DIR); // core/_data/modules/
 
 // 
+define ('_INTERFACE', 'interface');
 define ('_HEAD', 'head');
 define ('_HEADER', 'header');
 define ('_FOOT', 'footer');
