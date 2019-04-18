@@ -26,8 +26,6 @@ Class Router extends Core {
         $this->user_is_authorized();
         $this->user_is_admin();
         $this->url_is_locked();
-        global $test;
-        if ($test) { $this->test(); }
         return $this->user_access;
     }
 

@@ -1,6 +1,11 @@
 <?php
 require_once '_router.php';
-using (GEN);
+$dir = GEN;
+foreach (Using::get_dir_content ($dir) as $file) { 
+    if (is_file ($dir.$file)) {
+        require_once $dir.$file;
+    }
+}
 require_once INIT;
-using (_TEST);
+require_once TEST;
 ?>

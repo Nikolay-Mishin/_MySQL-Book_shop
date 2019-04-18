@@ -1,15 +1,5 @@
 <?php
 Class Using extends Core {
-    public static function file ($file) { require_once $file; }
-
-    public static function dir ($dir) {
-        foreach (self::get_dir_content ($dir) as $file) { 
-            if (is_file ($dir.$file)) {
-                Using::file ($dir.$file);
-            }
-        }
-    }
-
     public static function get_dir_content ($dir) {
         $files = scandir (self::dir_to_file ($dir));
         unset ($files[array_search ('.', $files, true)]);

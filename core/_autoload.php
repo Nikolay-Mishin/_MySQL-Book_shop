@@ -7,5 +7,5 @@ foreach (Using::get_dir_content ($dir) as $file) {
     }
 }
 require_once INIT;
-require_once _TEST;
+require_once TEST;
 ?>

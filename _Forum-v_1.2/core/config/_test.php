@@ -1,4 +1,3 @@
 <?php
-$test = false;
-// test ($_COOKIE);
+if ($test) { $router->test(); }
 ?>

@@ -58,7 +58,7 @@ function load ($data, $page, $args = []) {
         // test ($data);
         $title = $data['title'] ?? '';
         require_once C.'head.php'; // head
-        require_once C.'header.php'; // head
+        require_once C.'header.php'; // header
         $data = load_content ($data, $page, $args);
     }
     else {
@@ -69,11 +69,11 @@ function load ($data, $page, $args = []) {
         // test ($datas);
         $title = $datas[0]['title'] ?? '';
         require_once C.'head.php'; // head
-        require_once C.'header.php'; // head
+        require_once C.'header.php'; // header
         foreach ($datas as $key => $item) { load_content ($item, $page[$key], $args[$key]); }
     }
     require_once C.'footer.php'; // footer
-    require_once C.'scriptside.php'; // footer
+    require_once C.'scriptside.php'; // scriptside
     return $data;
 }
 

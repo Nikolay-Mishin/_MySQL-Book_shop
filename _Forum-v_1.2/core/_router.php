@@ -23,23 +23,13 @@ define ('GEN', CORE._GEN); // core/general/
 
 // General configs
 define ('MAIN_CONF', CONF.'main.php'); // core/config/
-define ('_TEST', CONF.'_test'); // core/config/
+define ('TEST', CONF.'_test.php'); // core/config/
 define ('GEN_CONF', CONF._GEN); // core/config/general/
 define ('INIT', GEN_CONF.'init.php'); // core/config/general/
+define ('LOCKED', GEN_CONF.'url_locked.php'); // core/config/general/
 
 require_once MAIN_CONF;
-
-function using ($path, $ext = '.php') {
-    $path = !is_dir ($path) ? $path.$ext : $path;
-    if (is_file ($path)) { Using::file ($path); }
-    if (is_dir ($path)) { Using::dir ($path); }
-}
-
-// $locked, $auth
-define ('URL_LOCKED', [
-    SECURED => 1,
-    'admin/books' => 0
-]);
+require_once LOCKED;
 
 function url_full_parse () {
     $url = url_dir_parse (SECURED) ? url_dir_parse (SECURED)[1] : false;

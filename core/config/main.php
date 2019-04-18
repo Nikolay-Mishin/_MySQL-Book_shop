@@ -5,5 +5,5 @@ require_once _C.'system/Using.php';
 require_once _C.'initiolize/Init_class.php';
 
 $init = Init_class::_();
-$test = true;
+$test = false;
 ?>

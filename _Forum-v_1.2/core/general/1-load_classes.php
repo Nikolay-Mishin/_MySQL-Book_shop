@@ -1,6 +1,5 @@
 <?php
 require_once _C.'system/List_folder_dirs.php';
-global $init;
 
 spl_autoload_register ('autoload');
 
