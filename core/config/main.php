@@ -1,4 +1,7 @@
 <?php
+define ('TEST', false);
+define ('REDIR', true);
+
 // Router configs
 define ('BASE_DIR', '/_git/_MySQL/_MySQL-Book_shop/');
 

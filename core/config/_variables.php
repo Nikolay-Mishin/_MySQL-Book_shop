@@ -23,6 +23,5 @@ define ('GEN', CORE._GEN); // core/general/
 
 define ('GEN_CONF', CONF._GEN); // core/config/general/
 define ('_INIT', CONF.'_init.php'); // core/config/
-define ('_TEST', CONF.'_test'); // core/config/
-define ('TEST', false);
+define ('_TEST', CONF.'_test.php'); // core/config/
 ?>

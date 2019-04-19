@@ -338,7 +338,7 @@ function query_preg ($val) {
     return $val;
 }
 
-function redirect ($t = 5, $url = null) { Controller::_()->redirect_call ($t, $url); }
+function redirect ($t = REDIR_T, $url = null) { if (REDIR) { Controller::_()->redirect_call ($t, $url); } }
 
 function set_redirect () { if (empty ($_POST)) { setcookie ('r', redirect_page()); } }
 
