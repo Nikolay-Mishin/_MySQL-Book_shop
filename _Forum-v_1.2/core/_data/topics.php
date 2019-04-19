@@ -1,5 +1,5 @@
 <?php
-$Post = array (
+$post = array (
     array (
     "id" => "1",
     "Date" => "25.03.2019 15:35",

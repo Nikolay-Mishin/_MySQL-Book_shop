@@ -9,7 +9,7 @@ foreach (Using::get_dir_content (GEN) as $file) {
 
 using (GEN_CONF);
 require_once INIT;
-require_once TEST;
+using (TEST);
 
 function using ($path, $ext = null) {
     if (!is_dir ($path)) $path = $ext ? $path.$ext : "$path.php";
