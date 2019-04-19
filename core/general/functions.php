@@ -30,10 +30,7 @@ function delete_cookies ($action) {
     return $_COOKIE;
 }
 
-function get_data_cookies ($action = null) {
-    global $data_cookies;
-    return $action ? $data_cookies[$action] : $data_cookies;
-}
+function get_data_cookies ($action = null) { return $action ? COOKIES[$action] : COOKIES; }
 
 function connect () {
     $db = mysqli_connect ('localhost', 'root', '', DB_NAME);
@@ -268,9 +265,8 @@ function query_get_rows ($db, $table, $condition = null, $filter = null, $offset
 }
 
 function query_add ($db, $table, $cols) {
-    global $data_tables;
-    if (!array_key_exists ($data_tables[$table], $cols)) { $cols[$data_tables[$table]] = query_get_rows ($db, $table)[0] + 1; }
-    else if (array_key_first ($cols) == $data_tables[$table]) {
+    if (!array_key_exists (TABLES_ID[$table], $cols)) { $cols[TABLES_ID[$table]] = query_get_rows ($db, $table)[0] + 1; }
+    else if (array_key_first ($cols) == TABLES_ID[$table]) {
         $cols[array_key_first ($cols)] = $cols[array_key_first ($cols)] != 'last' ? $cols[array_key_first ($cols)] : 'LAST_INSERT_ID()';
     }
     $cols = !is_array ($cols) ? "`$cols`" : query_from_array ($cols, 'SET');

@@ -1,5 +1,5 @@
 <?php
-$data_tables = [
+define ('TABLES_ID', [
     'authors' => 'author_id',
     'books' => 'book_id',
     'books_authors' => 'book_author_id',
@@ -11,5 +11,5 @@ $data_tables = [
     'roles' => 'role_id',
     'statuses' => 'status_id',
     'users' => 'user_id'
-];
+]);
 ?>
