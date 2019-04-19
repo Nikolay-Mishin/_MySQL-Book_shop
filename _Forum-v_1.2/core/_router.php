@@ -2,11 +2,12 @@
 define ('MAIN_CONF', 'config/main.php'); // core/
 
 function _const ($name, $value) {
-    $value = is_dir (__DIR__.'/'.$value) ? $value.$name : $value; 
+    $value = is_dir (__DIR__.'/'.$value) ? $value.$name : $value;
     define (strtoupper ($name), $value);
+    test (const_name ($name));
 }
 
-function const_name ($name) { return constant (strtoupper ($name)); }
+function const_name ($name) { return constant (strtoupper ($name)) ?: null; }
 
 function test ($data) { echo '<pre>'; print_r ($data); echo '</pre>'; };
 

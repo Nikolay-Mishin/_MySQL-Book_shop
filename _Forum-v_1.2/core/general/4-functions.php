@@ -59,14 +59,18 @@ function load ($data, $page, $args = []) {
         $title = $data['title'] ?? '';
         require_once C.'head.php'; // head
         require_once C.'header.php'; // header
+        require_once C.'menu_post.php';
         $data = load_content ($data, $page, $args);
     }
     else {
         $datas = [];
         foreach ($page as $key => $item) {
-            $datas[$key] = isset ($data[$key]) ? load_data ($data[$key], $args[$key]) : load_data ($data[array_key_last ($data)], $args[$key]);
+            $data[$key] = isset ($data[$key]) ? $data[$key] : $data[array_key_last ($data)];
+            $args[$key] = isset ($args[$key]) ? $args[$key] : null;
+            $datas[$key] = load_data ($data[$key], $args[$key]);
         }
         // test ($datas);
+        // test ($args);
         $title = $datas[0]['title'] ?? '';
         require_once C.'head.php'; // head
         require_once C.'header.php'; // header

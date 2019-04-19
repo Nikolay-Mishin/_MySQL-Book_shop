@@ -22,6 +22,6 @@ _const ('List_folder_dirs', _CLASS.'system/List_folder_dirs');
 define (strtoupper ('Main_classes'), [
     const_name ('Init'), const_name ('_Core'), const_name ('Using'), const_name ('Init_class'), const_name ('List_folder_dirs')
 ]);
-
+test (const_name ('Main_classes'));
 require_once '_variables.php';
 ?>

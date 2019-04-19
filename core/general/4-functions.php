@@ -64,7 +64,9 @@ function load ($data, $page, $args = []) {
     else {
         $datas = [];
         foreach ($page as $key => $item) {
-            $datas[$key] = isset ($data[$key]) ? load_data ($data[$key], $args[$key]) : load_data ($data[array_key_last ($data)], $args[$key]);
+            $data[$key] = isset ($data[$key]) ? $data[$key] : $data[array_key_last ($data)];
+            $args[$key] = isset ($args[$key]) ? $args[$key] : null;
+            $datas[$key] = load_data ($data[$key], $args[$key]);
         }
         // test ($datas);
         $title = $datas[0]['title'] ?? '';
