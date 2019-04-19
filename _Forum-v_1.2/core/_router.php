@@ -1,34 +1,11 @@
 <?php
 function test ($data) { echo '<pre>'; print_r ($data); echo '</pre>'; };
 
-define ('UP', '../');
-
-// Router configs
-define ('BASE_DIR', '/_git/_MySQL/_MySQL-Book_shop/');
-define ('SECURED', 'admin/');
-define ('PAGES_DIR', 'pages/');
-define ('MODULES_DIR', 'modules/');
-
-define ('_CLASS', '_classes/');
-define ('_CONF', 'config/');
-
-// General configs
-define ('DIR', url_full_parse());
-define ('CUR_DIR', url_cur_dir_parse());
-
-define ('CORE', DIR.'core/'); // core/
-define ('_C', CORE._CLASS); // core/_classes/
-define ('CONF', CORE._CONF); // core/config/
-require_once CONF.'main.php'; // core/config/
-
-define ('_GEN', 'general/');
-
-define ('GEN', CORE._GEN); // core/general/
-
-define ('GEN_CONF', CONF._GEN); // core/config/general/
-define ('INIT', CONF.'_init.php'); // core/config/
-define ('TEST', CONF.'_test.php'); // core/config/
-define ('_TEST', false);
+function using ($path, $ext = null) {
+    if (!is_dir ($path)) $path = $ext ? $path.$ext : "$path.php";
+    if (is_file ($path)) { Using::file($path); }
+    if (is_dir ($path)) { Using::dir($path); }
+}
 
 function url_full_parse () {
     $url = url_dir_parse (SECURED) ? url_dir_parse (SECURED)[1] : false;
@@ -53,4 +30,6 @@ function url_pattern ($dir) { return str_replace ('/', '\/', $dir); }
 function get_url ($url = null) { return $url ?? $_SERVER['PHP_SELF']; }
 
 function dir_to_file ($dir) { return Using::dir_to_file ($dir); }
+
+function cur_dir ($dir) { return basename (dirname(__FILE__)); }
 ?>
