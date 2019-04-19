@@ -36,7 +36,7 @@ function get_data_cookies ($action = null) {
 }
 
 function connect () {
-    $db = mysqli_connect ('localhost', 'root', '', '_book_shop');
+    $db = mysqli_connect ('localhost', 'root', '', DB_NAME);
     mysqli_set_charset ($db, 'utf8');
     return $db;
 }

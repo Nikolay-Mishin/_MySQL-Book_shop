@@ -6,6 +6,8 @@ Class Router extends Core {
     private $locked_url = [];
 
     public function test () {
+        test ('AUTH_DIR => ' . AUTH_DIR);
+        test ('INDEX => ' . INDEX);
         test ('session_started => ' . session_started());
         test ('=> SESSION');
         test ($_SESSION);
@@ -63,8 +65,6 @@ Class Router extends Core {
                 test ('Просмотр данной страницы доступен только Администрации!');
                 //redirect (3, INDEX);
             }
-            test ('AUTH_DIR => ' . AUTH_DIR);
-            test ('INDEX => ' . INDEX);
             return $locked_url['locked'];
         }
     }
