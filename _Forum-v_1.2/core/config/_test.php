@@ -1,3 +1,3 @@
 <?php
-if (_TEST) { $router->test(); }
+if (TEST) { $router->test(); }
 ?>

@@ -1,10 +1,29 @@
 <?php
+define ('MAIN_CONF', 'config/main.php'); // core/
+
+function _const ($name, $value) {
+    $value = is_dir (__DIR__.'/'.$value) ? $value.$name : $value; 
+    define (strtoupper ($name), $value);
+}
+
+function const_name ($name) { return constant (strtoupper ($name)); }
+
 function test ($data) { echo '<pre>'; print_r ($data); echo '</pre>'; };
 
-function using ($path, $ext = null) {
+function using ($path, $ext = null, $using = true) {
+    if (is_array ($path)) {
+        foreach ($path as $item) { include_path ($item, $ext, $using); }
+    }
+    else { include_path ($path, $ext, $using); }
+}
+
+function include_path ($path, $ext = null, $using = true) {
     if (!is_dir ($path)) $path = $ext ? $path.$ext : "$path.php";
-    if (is_file ($path)) { Using::file($path); }
-    if (is_dir ($path)) { Using::dir($path); }
+    if (!$using) { require_once $path; }
+    else {
+        if (is_file ($path)) { Using::file($path); }
+        if (is_dir ($path)) { Using::dir($path); }
+    }
 }
 
 function url_full_parse () {
@@ -31,5 +50,5 @@ function get_url ($url = null) { return $url ?? $_SERVER['PHP_SELF']; }
 
 function dir_to_file ($dir) { return Using::dir_to_file ($dir); }
 
-function cur_dir ($dir) { return basename (dirname(__FILE__)); }
+function cur_dir ($dir) { return basename (dirname ($dir)); }
 ?>
