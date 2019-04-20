@@ -307,7 +307,9 @@ function query_from_array ($arr, $s = '=') {
         }
         else {
             $val = query_parse ($val, $s);
-            if (gettype ($val) == 'string' && !preg_match ('/(.*)\((.+)\)/', $val)) { $val = "'$val'"; }
+            if (gettype ($val) == 'string' && !preg_match ('/(.*)\((.+)\)/', $val) && !preg_match ('/(.*)\(\)/', $val)) {
+                $val = "'$val'";
+            }
             $query .= "`$key` $s $val";
         }
 
