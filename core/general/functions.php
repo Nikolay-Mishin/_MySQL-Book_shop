@@ -56,7 +56,6 @@ function load ($data, $page, $args = []) {
         $title = $data['title'] ?? '';
         require_once C.'head.php'; // head
         require_once C.'header.php'; // header
-        require_once C.'menu_post.php';
         $data = load_content ($data, $page, $args);
     }
     else {
@@ -80,7 +79,6 @@ function load ($data, $page, $args = []) {
 
 function load_data ($data, $args) {
     // if (info ($data)['filename'] == '_redirect') $data .= 'main';
-    require C.'interface.php'; // interface
     require "$data.php"; // Data
     if (isset ($title)) { $args[] = 'title'; }
     // test ($args);
