@@ -1,5 +1,5 @@
 <?php
-$data_cookies = [
+define ('COOKIES', [
     'auth' => ['u', 't']
-];
+]);
 ?>

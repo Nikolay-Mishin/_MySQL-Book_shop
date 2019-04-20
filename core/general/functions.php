@@ -30,10 +30,7 @@ function delete_cookies ($action) {
     return $_COOKIE;
 }
 
-function get_data_cookies ($action = null) {
-    global $data_cookies;
-    return $action ? $data_cookies[$action] : $data_cookies;
-}
+function get_data_cookies ($action = null) { return $action ? COOKIES[$action] : COOKIES; }
 
 function connect () {
     $db = mysqli_connect ('localhost', 'root', '', DB_NAME);
@@ -58,7 +55,8 @@ function load ($data, $page, $args = []) {
         // test ($data);
         $title = $data['title'] ?? '';
         require_once C.'head.php'; // head
-        require_once C.'header.php'; // head
+        require_once C.'header.php'; // header
+        require_once C.'menu_post.php';
         $data = load_content ($data, $page, $args);
     }
     else {
@@ -69,18 +67,20 @@ function load ($data, $page, $args = []) {
             $datas[$key] = load_data ($data[$key], $args[$key]);
         }
         // test ($datas);
+        // test ($args);
         $title = $datas[0]['title'] ?? '';
         require_once C.'head.php'; // head
-        require_once C.'header.php'; // head
+        require_once C.'header.php'; // header
         foreach ($datas as $key => $item) { load_content ($item, $page[$key], $args[$key]); }
     }
     require_once C.'footer.php'; // footer
-    require_once C.'scriptside.php'; // footer
+    require_once C.'scriptside.php'; // scriptside
     return $data;
 }
 
 function load_data ($data, $args) {
     // if (info ($data)['filename'] == '_redirect') $data .= 'main';
+    require C.'interface.php'; // interface
     require "$data.php"; // Data
     if (isset ($title)) { $args[] = 'title'; }
     // test ($args);
@@ -125,14 +125,14 @@ function reg ($db, $login, $password, $email) {
 }
 
 function auth ($db, $email, $password) {
-    test ($_COOKIE);
+    if (TEST) test ($_COOKIE);
     $email = escape ($email, $db);
     $password = escape ($password, $db);
     $secured_password = md5 ($password);
     
     if ($user_id = query_select ($db, 'users', 'user_id', ['user_email' => $email, 'user_password' => $secured_password])) {
         $user_id = $user_id['user_id'];
-        test ("user_id => $user_id");
+        if (TEST) test ("user_id => $user_id");
         $token = generateToken();
         $token_time = time() + 900;
         $session = $_COOKIE['PHPSESSID'];
@@ -158,8 +158,8 @@ function logout ($db) {
     destroy_session();
     query_del ($db, 'connects', ['connect_user_id' => $_COOKIE['u']]);
     delete_cookies ('auth');
-    test ($_SESSION);
-    test ($_COOKIE);
+    if (TEST) test ($_SESSION);
+    if (TEST) test ($_COOKIE);
     redirect();
 }
 
@@ -268,14 +268,14 @@ function query_get_rows ($db, $table, $condition = null, $filter = null, $offset
 }
 
 function query_add ($db, $table, $cols) {
-    global $data_tables;
-    if (!array_key_exists ($data_tables[$table], $cols)) { $cols[$data_tables[$table]] = query_get_rows ($db, $table)[0] + 1; }
-    else if (array_key_first ($cols) == $data_tables[$table]) {
+    if (!array_key_exists (TABLES_ID[$table], $cols)) { $cols[TABLES_ID[$table]] = query_get_rows ($db, $table)[0] + 1; }
+    else if (array_key_first ($cols) == TABLES_ID[$table]) {
         $cols[array_key_first ($cols)] = $cols[array_key_first ($cols)] != 'last' ? $cols[array_key_first ($cols)] : 'LAST_INSERT_ID()';
     }
     $cols = !is_array ($cols) ? "`$cols`" : query_from_array ($cols, 'SET');
     $query = "INSERT INTO `$table` SET $cols";
-    test ($query);
+    if (TEST) test ($query);
+    // echo $query.'<br>';
     mysqli_query ($db, $query);
 }
 
@@ -283,14 +283,14 @@ function query_edit ($db, $table, $cols, $condition = null) {
     $cols = !is_array ($cols) ? "`$cols`" : query_from_array ($cols, 'SET');
     $condition =  $condition ? 'WHERE ' . query_from_array ($condition) : '';
     $query = "UPDATE `$table` SET $cols $condition";
-    // echo $query.'<br>';
+    //echo $query.'<br>';
     mysqli_query ($db, $query);
 }
 
 function query_del ($db, $table, $condition = null) {
     $condition = $condition ? 'WHERE ' . query_from_array ($condition) : '';
     $query = "DELETE FROM `$table` $condition";
-    // echo $auery.'<br>';
+    // echo $query.'<br>';
     mysqli_query ($db, $query);
 }
 
@@ -311,7 +311,9 @@ function query_from_array ($arr, $s = '=') {
         }
         else {
             $val = query_parse ($val, $s);
-            if (gettype ($val) == 'string' && !preg_match ('/(.*)\((.+)\)/', $val)) { $val = "'$val'"; }
+            if (gettype ($val) == 'string' && !preg_match ('/(.*)\((.+)\)/', $val) && !preg_match ('/(.*)\(\)/', $val)) {
+                $val = "'$val'";
+            }
             $query .= "`$key` $s $val";
         }
 
@@ -342,7 +344,7 @@ function query_preg ($val) {
     return $val;
 }
 
-function redirect ($t = 5, $url = null) { Controller::_()->redirect_call ($t, $url); }
+function redirect ($t = REDIR_T, $url = null) { if (REDIR) { Controller::_()->redirect_call ($t, $url); } }
 
 function set_redirect () { if (empty ($_POST)) { setcookie ('r', redirect_page()); } }
 
