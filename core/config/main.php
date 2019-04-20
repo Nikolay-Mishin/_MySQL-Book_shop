@@ -62,10 +62,6 @@ define ('OUT_DIR', CUR_DIR.'logout.php');
 define ('_AUTHORS_DIR', CUR_DIR.(url_admin_parse() ? '' : _A).PAGES_DIR.'authors.php');
 define ('BOOKS_DIR', PAGES.'books.php');
 define ('BOOK_DIR', PAGES.'book.php');
-define ('GEN_SEC_DIR', PAGES.'general_section.php');
-define ('GEN_SEC_GUIDES_DIR', PAGES.'general_section_guides.php');
-define ('NEWS_SEC_DIR', PAGES.'news_section.php');
-define ('TOPICS_POST_DIR', PAGES.'topics_post.php');
 
 // Основные директории
 define ('RES', DIR.'resources/');
@@ -80,25 +76,12 @@ define ('Awesome', FONTS.'fontawesome-5.7.2/');
 
 // Шаблоны
 define ('TEMPS', DIR.'templates/');
-define ('_MAIN', TEMPS.'main');
-define ('MAIN', TEMPS.'main/');
-define ('THEME', MAIN);
-define ('NEWS', TEMPS.'news-section/');
-define ('POST', TEMPS.'post/');
-
-define ('GEN_SEC', TEMPS._GEN.'general_section');
-define ('GEN_SEC_GUIDES', TEMPS._GEN.'general_section_guides');
-define ('NEWS_SEC', NEWS.'news_section');
-define ('TOPICS_POST', POST.'topics_post');
-define ('TOPICS_COMMS', POST.'topics_comments'); 
-define ('TOPICS_COMS_ADD', POST.'topics_add_comments');
-
+define ('MAIN', TEMPS.'main');
 // define ('_RED', TEMPS._R); // templates/_redirect/
 define ('COMN', TEMPS._COMN); // templates/common/
 // Основные шаблоны
 define ('HEAD', COMN.'head'); // templates/common/
 define ('HEADER', COMN.'header'); // templates/common/
-define ('MENU_POST', COMN.'menu_post');
 define ('FOOT', COMN.'footer'); // templates/common/
 define ('SCRIPT', COMN.'scriptside'); // templates/common/
 define ('AUTH', COMN.'auth'); // templates/common/
